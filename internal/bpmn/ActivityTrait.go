@@ -6,12 +6,12 @@ type ActivityTrait struct {
 	LoadingData Transition
 	Active      State
 	Completed   State
-	Terminating Transition
+	Terminating TerminatingTransition
 	Failing     FailingTransition
 	Failed      State
 	Terminated  State
 	Cancelled   State
-	Cancelling  Transition
+	Cancelling  CancellingTransition
 	Completing  CompletingTransition
 }
 
@@ -32,9 +32,7 @@ func (node *Activity) Init(definitions *Definitions) {
 	node.LoadingData.Connect(&node.Active)
 	node.Active.Connect(&node.Failing)
 	node.Active.Connect(&node.Terminating)
-	node.Ready.Connect(&node.Terminating)
 	node.Active.Connect(&node.Cancelling)
-	node.Ready.Connect(&node.Cancelling)
 	node.Cancelling.Connect(&node.Cancelled)
 	node.Terminating.Connect(&node.Terminated)
 	node.Failing.Connect(&node.Failed)
@@ -48,5 +46,5 @@ func (node *Activity) Init(definitions *Definitions) {
 		Incoming := &node.Incoming[i]
 		definitions.GetSequenceFlow(*Incoming).Transit.Connect(&node.Ready)
 	}
-
+	
 }
