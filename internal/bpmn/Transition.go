@@ -20,6 +20,8 @@ type TransitionInterface interface {
 	AppendIncoming(state *State)
 	GetName() string
 	GetOwner() NamedElementInterface
+	GetIncoming() []*State
+	GetOutgoing() []*State
 }
 
 // Init transition
@@ -93,4 +95,12 @@ func (transition *Transition) GetName() string {
 
 func (transition *Transition) GetOwner() NamedElementInterface {
 	return transition.Owner
+}
+
+func (transition *Transition) GetIncoming() []*State {
+	return transition.Incoming
+}
+
+func (transition *Transition) GetOutgoing() []*State {
+	return transition.Outgoing
 }

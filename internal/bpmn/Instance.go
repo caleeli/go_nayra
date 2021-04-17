@@ -27,7 +27,18 @@ func (instance *Instance) NextTick(definitions *Definitions) {
 			if transition.Execute(instance) {
 				if DEBUG {
 					owner := transition.GetOwner()
-					instance.log("(%s) %s: %s", reflect.TypeOf(owner), owner.GetName(), transition.GetName())
+					outgoing := transition.GetOutgoing()
+					target := make(map[string]int, len(outgoing))
+					for _, state := range outgoing {
+						target[state.Name] = len(state.Tokens)
+					}
+					instance.log(
+						"(%s) %s: %s [%v]",
+						reflect.TypeOf(owner),
+						owner.GetName(),
+						transition.GetName(),
+						target,
+					)
 				}
 				exit = false
 			}
