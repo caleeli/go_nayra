@@ -6,6 +6,8 @@ import (
 	"nayra/internal/bpmn"
 	"nayra/internal/errors"
 	"os"
+
+	"github.com/google/uuid"
 )
 
 func LoadBpmn(id string) (definitions *bpmn.Definitions, err error) {
@@ -23,6 +25,7 @@ func LoadBpmn(id string) (definitions *bpmn.Definitions, err error) {
 	}
 	definitions = &bpmn.Definitions{}
 	xml.Unmarshal(content, definitions)
+	definitions.UUID = uuid.New()
 
 	definitions.ParseTree()
 

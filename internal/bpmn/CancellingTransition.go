@@ -26,5 +26,5 @@ func (transition CancellingTransition) Execute(instance *Instance) bool {
 
 // Condition to activate the completing transition
 func (transition *CancellingTransition) Condition(instance *Instance, inputTokens []*Token) bool {
-	return inputTokens[0].Status == "CANCELLING"
+	return inputTokens[0].Transition == "CANCELLING"
 }

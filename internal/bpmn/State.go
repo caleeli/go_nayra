@@ -1,5 +1,6 @@
 package bpmn
 
+//easyjson:skip
 // State from Nayra
 type State struct {
 	Node
@@ -39,9 +40,9 @@ func (state *State) Select(instance *Instance, selectAll bool) []*Token {
 
 // CreateToken into the State
 func (state *State) CreateToken(instance *Instance) *Token {
-	token := Token{Instance: instance, Owner: state}
-	state.Tokens = append(state.Tokens, &token)
-	return &token
+	token := instance.CreateToken(state)
+	state.Tokens = append(state.Tokens, token)
+	return token
 }
 
 // RemoveToken from state

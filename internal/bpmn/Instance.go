@@ -3,6 +3,8 @@ package bpmn
 import (
 	"fmt"
 	"reflect"
+
+	"github.com/google/uuid"
 )
 
 const (
@@ -11,12 +13,21 @@ const (
 
 // Instance from Nayra
 type Instance struct {
+	ID     uuid.UUID `json:"id"`
 	Tokens []*Token
 	logs   []string
 }
 
 // Init state
-func (instance *Instance) Init(definitions *Definitions) {}
+func (instance *Instance) Init(definitions *Definitions) {
+	instance.Tokens = []*Token{}
+}
+
+func (instance *Instance) CreateToken(state *State) *Token {
+	token := Token{ID: uuid.New(), Instance: instance, Owner: state}
+	instance.Tokens = append(instance.Tokens, &token)
+	return &token
+}
 
 // NextTick execute transits
 func (instance *Instance) NextTick(definitions *Definitions) {

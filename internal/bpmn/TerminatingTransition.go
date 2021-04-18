@@ -26,5 +26,5 @@ func (transition TerminatingTransition) Execute(instance *Instance) bool {
 
 // Condition to activate the completing transition
 func (transition *TerminatingTransition) Condition(instance *Instance, inputTokens []*Token) bool {
-	return inputTokens[0].Status == "TERMINATING"
+	return inputTokens[0].Transition == "TERMINATING"
 }
