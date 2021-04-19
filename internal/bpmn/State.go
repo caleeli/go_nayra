@@ -49,6 +49,7 @@ func (state *State) CreateToken(instance *Instance) *Token {
 func (state *State) RemoveToken(token *Token) bool {
 	for i := 0; i < len(state.Tokens); i++ {
 		if state.Tokens[i] == token {
+			token.Instance.RemoveToken(token)
 			state.Tokens = append(state.Tokens[:i], state.Tokens[i+1:]...)
 			return true
 		}

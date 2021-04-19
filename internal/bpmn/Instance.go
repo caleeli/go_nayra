@@ -25,9 +25,22 @@ func (instance *Instance) Init(definitions *Definitions) {
 }
 
 func (instance *Instance) CreateToken(state *State) *Token {
-	token := Token{ID: uuid.New(), Instance: instance, Owner: state}
+	token := Token{ID: uuid.New(), Instance: instance, Owner: state, Active: true}
 	instance.Tokens = append(instance.Tokens, &token)
 	return &token
+}
+
+// RemoveToken from state
+func (instance *Instance) RemoveToken(token *Token) bool {
+	token.Active = false
+	return true
+	//for i := 0; i < len(instance.Tokens); i++ {
+	//	if instance.Tokens[i] == token {
+	//		instance.Tokens = append(instance.Tokens[:i], instance.Tokens[i+1:]...)
+	//		return true
+	//	}
+	//}
+	//return false
 }
 
 // NextTick execute transits

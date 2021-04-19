@@ -12,6 +12,7 @@ type Token struct {
 	Instance   *Instance
 	Owner      *State
 	Transition string
+	Active     bool
 }
 
 // MarshalJSON supports json.Marshaler interface
