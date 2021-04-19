@@ -5,20 +5,9 @@ import (
 	"fmt"
 	"nayra/internal/errors"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-)
-
-type StorageService interface {
-	InsertRequest(request Request) error
-}
-
-const (
-	DB_USER     = ""
-	DB_PASSWORD = ""
-	DB_HOST     = "localhost"
-	DB_PORT     = 27017
-	DB_NAME     = "go_nayra"
 )
 
 type mongoDB struct {
@@ -28,19 +17,45 @@ type mongoDB struct {
 	ctx      context.Context
 }
 
-func NewMongoDB() (StorageService, error) {
-	//uri := fmt.Sprintf(
-	//	"mongodb://%s:%s@%s:%d",
-	//	DB_USER,
-	//	DB_PASSWORD,
-	//	DB_HOST,
-	//	DB_PORT,
-	//)
-	uri := fmt.Sprintf(
-		"mongodb://%s:%d",
-		DB_HOST,
-		DB_PORT,
-	)
+func NewMongoDB(
+	DB_USER,
+	DB_PASSWORD,
+	DB_HOST,
+	DB_PORT,
+	DB_NAME string,
+) (StorageService, error) {
+	var uri string
+	if DB_HOST == "" {
+		DB_HOST = "127.0.0.1"
+	}
+	if DB_PORT == "" {
+		DB_PORT = "27017"
+	}
+	if DB_NAME == "" {
+		DB_NAME = "go_nayra"
+	}
+	if DB_USER == "" {
+		uri = fmt.Sprintf(
+			"mongodb://%s:%s",
+			DB_HOST,
+			DB_PORT,
+		)
+	} else if DB_PASSWORD == "" {
+		uri = fmt.Sprintf(
+			"mongodb://%s@%s:%s",
+			DB_USER,
+			DB_HOST,
+			DB_PORT,
+		)
+	} else {
+		uri = fmt.Sprintf(
+			"mongodb://%s:%s@%s:%s",
+			DB_USER,
+			DB_PASSWORD,
+			DB_HOST,
+			DB_PORT,
+		)
+	}
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
 		return nil, errors.WrapServiceError(err, "Unable to start MongoDB Service")
@@ -62,9 +77,24 @@ func NewMongoDB() (StorageService, error) {
 
 func (db *mongoDB) InsertRequest(request Request) (err error) {
 	if db.requests == nil {
-		db.requests = db.database.Collection("test")
+		db.requests = db.database.Collection("requests")
 	}
-	req := request.(*tRequest)
-	_, err = db.requests.InsertOne(db.ctx, marshalRequest(req))
+	_, err = db.requests.InsertOne(db.ctx, marshalRequest(request))
+	return
+}
+
+func (db *mongoDB) UpdateRequest(request Request) (err error) {
+	if db.requests == nil {
+		db.requests = db.database.Collection("requests")
+	}
+	filter := bson.D{{Key: "id", Value: request.GetId().String()}}
+	bm := marshalRequest(request)
+	update := bson.D{{Key: "$set", Value: bm}}
+
+	_, err = db.requests.UpdateOne(
+		db.ctx,
+		filter,
+		update,
+	)
 	return
 }

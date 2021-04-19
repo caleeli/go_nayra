@@ -3,6 +3,7 @@ package cli
 import (
 	"log"
 	"nayra/internal/nayra"
+	"nayra/internal/storage"
 
 	"github.com/spf13/cobra"
 )
@@ -11,7 +12,8 @@ import (
 type CobraFn func(cmd *cobra.Command, args []string)
 
 // Nayra cli
-func Nayra() *cobra.Command {
+func Nayra(store storage.StorageService) *cobra.Command {
+	nayra.SetupStorageService(store)
 	rootCmd := &cobra.Command{Use: "nayra"}
 	rootCmd.AddCommand(initCallProcessCmd())
 	return rootCmd

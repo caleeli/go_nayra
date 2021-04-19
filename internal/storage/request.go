@@ -15,7 +15,16 @@ type tRequest struct {
 	observers    []*tRequest
 }
 
+var config struct {
+	storage StorageService
+}
+
+func SetupStorageService(storage StorageService) {
+	config.storage = storage
+}
+
 type Request interface {
+	GetId() uuid.UUID
 	GetInstance(uuid uuid.UUID) *bpmn.Instance
 	GetInstanceUuids() []uuid.UUID
 	TraceLog()
@@ -35,12 +44,16 @@ func NewRequest(definitions *bpmn.Definitions, instances int) (Request, error) {
 	return &request, nil
 }
 
-func SaveRequest(request Request) error {
-	db, err := NewMongoDB()
-	if err != nil {
-		panic(err)
-	}
-	return db.InsertRequest(request)
+func InsertRequest(request Request) error {
+	return config.storage.InsertRequest(request)
+}
+
+func UpdateRequest(request Request) error {
+	return config.storage.UpdateRequest(request)
+}
+
+func (request *tRequest) GetId() uuid.UUID {
+	return request.ID
 }
 
 func (request *tRequest) GetInstance(uuid uuid.UUID) *bpmn.Instance {

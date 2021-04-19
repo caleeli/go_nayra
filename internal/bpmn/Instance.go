@@ -20,6 +20,7 @@ type Instance struct {
 
 // Init state
 func (instance *Instance) Init(definitions *Definitions) {
+	instance.ID = uuid.New()
 	instance.Tokens = []*Token{}
 }
 

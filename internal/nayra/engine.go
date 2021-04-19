@@ -5,6 +5,10 @@ import (
 	"nayra/internal/storage"
 )
 
+func SetupStorageService(store storage.StorageService) {
+	storage.SetupStorageService(store)
+}
+
 func CallProcess(definitionsId string, processId string) (request storage.Request, err error) {
 	definitions, err := storage.LoadBpmn(definitionsId)
 	if err != nil {
@@ -24,9 +28,15 @@ func CallProcess(definitionsId string, processId string) (request storage.Reques
 	if err != nil {
 		return nil, err
 	}
-	storage.SaveRequest(request)
+	err = storage.InsertRequest(request)
+	if err != nil {
+		return nil, err
+	}
 	// @todo queue
 	instance.NextTick(definitions)
-	storage.SaveRequest(request)
+	err = storage.UpdateRequest(request)
+	if err != nil {
+		return nil, err
+	}
 	return
 }

@@ -2,54 +2,53 @@ package storage
 
 import (
 	"nayra/internal/bpmn"
-
-	"github.com/google/uuid"
 )
 
 type sRequest struct {
-	id            uuid.UUID
-	definitionsId uuid.UUID
-	instances     []sInstance
+	ID            string      `json:"id" bson:"id"`
+	DefinitionsId string      `json:"definitionsId" bson:"definitionsId"`
+	Instances     []sInstance `json:"instances" bson:"instances"`
 }
 
 type sInstance struct {
-	id     uuid.UUID
-	tokens []sToken
+	ID     string   `json:"id" bson:"id"`
+	Tokens []sToken `json:"tokens"`
 }
 
 type sToken struct {
-	id         uuid.UUID
-	status     string
-	transition string
+	ID         string
+	Status     string
+	Transition string
 }
 
-func marshalRequest(req *tRequest) sRequest {
+func marshalRequest(request Request) sRequest {
+	req := request.(*tRequest)
 	output := sRequest{
-		id:            req.ID,
-		definitionsId: req.Definitions.UUID,
-		instances:     make([]sInstance, len(req.Instances)),
+		ID:            req.ID.String(),
+		DefinitionsId: req.Definitions.UUID.String(),
+		Instances:     make([]sInstance, len(req.Instances)),
 	}
 	for i := range req.Instances {
-		marshalInstance(req.Instances[i])
+		output.Instances[i] = marshalInstance(req.Instances[i])
 	}
 	return output
 }
 
 func marshalInstance(instance *bpmn.Instance) sInstance {
 	output := sInstance{
-		id:     instance.ID,
-		tokens: make([]sToken, len(instance.Tokens)),
+		ID:     instance.ID.String(),
+		Tokens: make([]sToken, len(instance.Tokens)),
 	}
 	for i := range instance.Tokens {
-		marshalToken(instance.Tokens[i])
+		output.Tokens[i] = marshalToken(instance.Tokens[i])
 	}
 	return output
 }
 
 func marshalToken(token *bpmn.Token) sToken {
 	return sToken{
-		id:         token.ID,
-		status:     token.Owner.Name,
-		transition: token.Transition,
+		ID:         token.ID.String(),
+		Status:     token.Owner.Name,
+		Transition: token.Transition,
 	}
 }
