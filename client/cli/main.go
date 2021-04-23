@@ -1,7 +1,7 @@
 package main
 
 import (
-	"nayra/client/cli"
+	"nayra/client/cli/cmd"
 	"nayra/internal/storage"
 	"os"
 )
@@ -17,6 +17,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	nayraCli := cli.Nayra(db)
+	nayraCli := cmd.Nayra(db)
 	nayraCli.Execute()
 }

@@ -1,4 +1,4 @@
-package cli
+package cmd
 
 import (
 	"log"
@@ -12,7 +12,7 @@ import (
 // CobraFn function definion of run cobra command
 type CobraFn func(cmd *cobra.Command, args []string)
 
-// Nayra cli
+// Nayra cmd
 func Nayra(store storage.StorageService) *cobra.Command {
 	nayra.SetupStorageService(store)
 	rootCmd := &cobra.Command{Use: "nayra"}
