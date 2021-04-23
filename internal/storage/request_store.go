@@ -110,6 +110,8 @@ func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, toke
 		Transition: token.Transition,
 		Active:     token.Active,
 	}
-	owner.Tokens = append(owner.Tokens, output)
+	if output.Active {
+		owner.Tokens = append(owner.Tokens, output)
+	}
 	return output, nil
 }

@@ -68,7 +68,7 @@ func transitToken() CobraFn {
 		tokenFlag, _ := cmd.Flags().GetString("token")
 		requestId, _ := uuid.Parse(requestFlag)
 		tokenId, _ := uuid.Parse(tokenFlag)
-		request, err := nayra.TransitToken(requestId, tokenId, "Completing")
+		request, err := nayra.TransitToken(requestId, tokenId, args[0])
 		if err != nil {
 			log.Fatal(err)
 		}
