@@ -31,7 +31,6 @@ type Request interface {
 	GetToken(uuid uuid.UUID) (*bpmn.Token, error)
 	GetDefinitions() *bpmn.Definitions
 	TraceLog()
-	MarshalJSON() ([]byte, error)
 }
 
 func NewRequest(definitions *bpmn.Definitions, instances int) (Request, error) {

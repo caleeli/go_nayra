@@ -91,8 +91,8 @@ func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request Request, err error)
 	if err != nil {
 		return nil, err
 	}
-	request = unmarshalRequest(srequest)
-	return request, nil
+	request, err = unmarshalRequest(srequest)
+	return request, err
 }
 
 func (db *mongoDB) InsertRequest(request Request) (err error) {

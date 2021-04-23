@@ -47,18 +47,18 @@ func TransitToken(requestId, tokenId uuid.UUID, transition string) (request stor
 	if err != nil {
 		return nil, err
 	}
-	token, err := request.GetToken(tokenId)
-	if err != nil {
-		return nil, err
-	}
-	token.Transition = transition
-	definitions := request.GetDefinitions()
-	instance := token.Instance
-	// @todo queue
-	instance.NextTick(definitions)
-	err = storage.UpdateRequest(request)
-	if err != nil {
-		return nil, err
-	}
+	// token, err := request.GetToken(tokenId)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// token.Transition = transition
+	// definitions := request.GetDefinitions()
+	// instance := token.Instance
+	// // @todo queue
+	// instance.NextTick(definitions)
+	// err = storage.UpdateRequest(request)
+	// if err != nil {
+	// 	return nil, err
+	// }
 	return
 }

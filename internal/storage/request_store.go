@@ -55,42 +55,61 @@ func marshalToken(token *bpmn.Token) sToken {
 		Status:     token.Owner.Name,
 		StateIndex: token.Owner.Index,
 		Transition: token.Transition,
+		Active:     token.Active,
 	}
 }
 
-func unmarshalRequest(request *sRequest) Request {
+func unmarshalRequest(request *sRequest) (Request, error) {
 	ID, _ := uuid.Parse(request.ID)
-	definitions, _ := LoadBpmn(request.DefinitionsId)
+	definitions, err := LoadBpmn(request.DefinitionsId)
+	if err != nil {
+		return nil, err
+	}
 	output := &tRequest{
 		ID:          ID,
 		Definitions: definitions,
 		Instances:   make([]*bpmn.Instance, len(request.Instances)),
 	}
 	for i := range request.Instances {
-		output.Instances[i] = unmarshalInstance(definitions, &request.Instances[i])
+		output.Instances[i], err = unmarshalInstance(definitions, &request.Instances[i])
+		if err != nil {
+			return nil, err
+		}
 	}
-	return output
+	return output, nil
 }
 
-func unmarshalInstance(definitions *bpmn.Definitions, instance *sInstance) *bpmn.Instance {
-	ID, _ := uuid.Parse(instance.ID)
+func unmarshalInstance(definitions *bpmn.Definitions, instance *sInstance) (*bpmn.Instance, error) {
+	ID, err := uuid.Parse(instance.ID)
+	if err != nil {
+		return nil, err
+	}
 	output := &bpmn.Instance{
 		ID:     ID,
 		Tokens: make([]*bpmn.Token, len(instance.Tokens)),
 	}
 	for i := range instance.Tokens {
-		output.Tokens[i] = unmarshalToken(definitions, output, &instance.Tokens[i])
+		output.Tokens[i], err = unmarshalToken(definitions, output, &instance.Tokens[i])
+		if err != nil {
+			return nil, err
+		}
 	}
-	return output
+	return output, nil
 }
 
-func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, token *sToken) *bpmn.Token {
-	ID, _ := uuid.Parse(token.ID)
-	return &bpmn.Token{
+func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, token *sToken) (*bpmn.Token, error) {
+	ID, err := uuid.Parse(token.ID)
+	if err != nil {
+		return nil, err
+	}
+	owner := definitions.States[token.StateIndex]
+	output := &bpmn.Token{
 		ID:         ID,
 		Instance:   instance,
-		Owner:      definitions.States[token.StateIndex],
+		Owner:      owner,
 		Transition: token.Transition,
 		Active:     token.Active,
 	}
+	owner.Tokens = append(owner.Tokens, output)
+	return output, nil
 }

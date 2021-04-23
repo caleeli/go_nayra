@@ -12,7 +12,7 @@ import (
 
 func LoadBpmn(id string) (definitions *bpmn.Definitions, err error) {
 	// @todo load from DB
-	path := "data/" + id
+	path := "data/" + id + ".bpmn"
 	xmlFile, err := os.Open(path)
 	if err != nil {
 		return nil, errors.WrapStorageError(err, "Unable to open file %s", path)
@@ -25,7 +25,10 @@ func LoadBpmn(id string) (definitions *bpmn.Definitions, err error) {
 	}
 	definitions = &bpmn.Definitions{}
 	xml.Unmarshal(content, definitions)
-	definitions.UUID = uuid.New()
+	definitions.UUID, err = uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
 
 	definitions.ParseTree()
 

@@ -96,6 +96,6 @@ func (instance *Instance) TokensLog() {
 		if token.Active {
 			active = "[*]"
 		}
-		fmt.Println(active, token.ID, token.Owner.Owner.GetName(), "(", token.Owner.Name, ")")
+		fmt.Println(active, token.ID, token.Owner.Owner.GetName(), "(", token.Owner.Name, token.Owner.Index, ")")
 	}
 }
