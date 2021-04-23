@@ -3,6 +3,8 @@ package nayra
 import (
 	"nayra/internal/errors"
 	"nayra/internal/storage"
+
+	"github.com/google/uuid"
 )
 
 func SetupStorageService(store storage.StorageService) {
@@ -22,8 +24,7 @@ func CallProcess(definitionsId string, processId string) (request storage.Reques
 	if err != nil {
 		return nil, err
 	}
-	uuids := request.GetInstanceUuids()
-	instance := request.GetInstance(uuids[0])
+	instance := request.GetInstance(0)
 	process.Execute.CreateToken(instance)
 	if err != nil {
 		return nil, err
@@ -32,6 +33,27 @@ func CallProcess(definitionsId string, processId string) (request storage.Reques
 	if err != nil {
 		return nil, err
 	}
+	// @todo queue
+	instance.NextTick(definitions)
+	err = storage.UpdateRequest(request)
+	if err != nil {
+		return nil, err
+	}
+	return
+}
+
+func TransitToken(requestId, tokenId uuid.UUID, transition string) (request storage.Request, err error) {
+	request, err = storage.LoadRequest(requestId)
+	if err != nil {
+		return nil, err
+	}
+	token, err := request.GetToken(tokenId)
+	if err != nil {
+		return nil, err
+	}
+	token.Transition = transition
+	definitions := request.GetDefinitions()
+	instance := token.Instance
 	// @todo queue
 	instance.NextTick(definitions)
 	err = storage.UpdateRequest(request)

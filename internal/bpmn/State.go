@@ -1,12 +1,12 @@
 package bpmn
 
-//easyjson:skip
 // State from Nayra
 type State struct {
 	Node
 	Incoming []TransitionInterface
 	Outgoing []TransitionInterface
 	Tokens   []*Token
+	Index    int
 }
 
 type StateInterface interface {
@@ -15,6 +15,7 @@ type StateInterface interface {
 // Init transition
 func (state *State) Init(definitions *Definitions, owner NamedElementInterface, name string) {
 	state.Node.Init(definitions, owner, name)
+	state.Index = len(definitions.States)
 	definitions.States = append(definitions.States, state)
 }
 

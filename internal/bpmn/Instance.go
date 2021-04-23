@@ -30,17 +30,20 @@ func (instance *Instance) CreateToken(state *State) *Token {
 	return &token
 }
 
+// GetToken by id
+func (instance *Instance) GetToken(id uuid.UUID) *Token {
+	for i := range instance.Tokens {
+		if instance.Tokens[i].ID == id {
+			return instance.Tokens[i]
+		}
+	}
+	return nil
+}
+
 // RemoveToken from state
 func (instance *Instance) RemoveToken(token *Token) bool {
 	token.Active = false
 	return true
-	//for i := 0; i < len(instance.Tokens); i++ {
-	//	if instance.Tokens[i] == token {
-	//		instance.Tokens = append(instance.Tokens[:i], instance.Tokens[i+1:]...)
-	//		return true
-	//	}
-	//}
-	//return false
 }
 
 // NextTick execute transits
@@ -83,5 +86,16 @@ func (instance *Instance) log(line string, args ...interface{}) {
 func (instance *Instance) TraceLog() {
 	for _, line := range instance.logs {
 		fmt.Println(line)
+	}
+}
+
+// Log an action during execution
+func (instance *Instance) TokensLog() {
+	for _, token := range instance.Tokens {
+		active := "[.]"
+		if token.Active {
+			active = "[*]"
+		}
+		fmt.Println(active, token.ID, token.Owner.Owner.GetName(), "(", token.Owner.Name, ")")
 	}
 }

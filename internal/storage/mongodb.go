@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"nayra/internal/errors"
 
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -75,11 +76,28 @@ func NewMongoDB(
 	return service, nil
 }
 
-func (db *mongoDB) InsertRequest(request Request) (err error) {
+func (db *mongoDB) getRequests() *mongo.Collection {
 	if db.requests == nil {
 		db.requests = db.database.Collection("requests")
 	}
-	_, err = db.requests.InsertOne(db.ctx, marshalRequest(request))
+	return db.requests
+}
+
+func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request Request, err error) {
+	requests := db.getRequests()
+	filter := bson.D{{Key: "id", Value: requestId.String()}}
+	srequest := &sRequest{}
+	err = requests.FindOne(db.ctx, filter).Decode(srequest)
+	if err != nil {
+		return nil, err
+	}
+	request = unmarshalRequest(srequest)
+	return request, nil
+}
+
+func (db *mongoDB) InsertRequest(request Request) (err error) {
+	requests := db.getRequests()
+	_, err = requests.InsertOne(db.ctx, marshalRequest(request))
 	return
 }
 
