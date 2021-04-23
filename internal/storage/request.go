@@ -12,7 +12,7 @@ type tRequest struct {
 	ID          uuid.UUID         `json:"id"`
 	Definitions *bpmn.Definitions `json:"definitionsId"`
 	Instances   []*bpmn.Instance  `json:"instances"`
-	observers   []*tRequest
+	// @todo observers   []*tRequest
 }
 
 var config struct {
