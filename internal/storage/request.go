@@ -1,40 +1,124 @@
 package storage
 
 import (
-	"fmt"
 	"nayra/internal/bpmn"
-	"nayra/internal/errors"
+	"nayra/internal/repository"
 
 	"github.com/google/uuid"
 )
 
-type tRequest struct {
-	ID          uuid.UUID         `json:"id"`
-	Definitions *bpmn.Definitions `json:"definitionsId"`
-	Instances   []*bpmn.Instance  `json:"instances"`
-	// @todo observers   []*tRequest
+type sRequest struct {
+	ID            string      `json:"id" bson:"id"`
+	DefinitionsId string      `json:"definitionsId" bson:"definitionsId"`
+	Instances     []sInstance `json:"instances" bson:"instances"`
 }
 
-var config struct {
-	storage StorageService
+type sInstance struct {
+	ID     string   `json:"id" bson:"id"`
+	Tokens []sToken `json:"tokens"`
 }
 
-func SetupStorageService(storage StorageService) {
-	config.storage = storage
+type sToken struct {
+	ID         string
+	Status     string
+	StateIndex int
+	Transition string
+	Active     bool
 }
 
-type Request interface {
-	GetId() uuid.UUID
-	GetInstance(index int) *bpmn.Instance
-	GetInstanceById(id uuid.UUID) *bpmn.Instance
-	GetInstanceIds() []uuid.UUID
-	GetToken(uuid uuid.UUID) (*bpmn.Token, error)
-	GetDefinitions() *bpmn.Definitions
-	TraceLog()
+func marshalRequest(request repository.Request) sRequest {
+	req := request.(*repository.TRequest)
+	output := sRequest{
+		ID:            req.ID.String(),
+		DefinitionsId: req.Definitions.UUID.String(),
+		Instances:     make([]sInstance, len(req.Instances)),
+	}
+	for i := range req.Instances {
+		output.Instances[i] = marshalInstance(req.Instances[i])
+	}
+	return output
 }
 
-func NewRequest(definitions *bpmn.Definitions, instances int) (Request, error) {
-	request := tRequest{
+func marshalInstance(instance *bpmn.Instance) sInstance {
+	output := sInstance{
+		ID:     instance.ID.String(),
+		Tokens: make([]sToken, len(instance.Tokens)),
+	}
+	for i := range instance.Tokens {
+		output.Tokens[i] = marshalToken(instance.Tokens[i])
+	}
+	return output
+}
+
+func marshalToken(token *bpmn.Token) sToken {
+	return sToken{
+		ID:         token.ID.String(),
+		Status:     token.Owner.Name,
+		StateIndex: token.Owner.Index,
+		Transition: token.Transition,
+		Active:     token.Active,
+	}
+}
+
+func unmarshalRequest(request *sRequest) (repository.Request, error) {
+	ID, _ := uuid.Parse(request.ID)
+	definitions, err := LoadDefinitions(request.DefinitionsId)
+	if err != nil {
+		return nil, err
+	}
+	output := &repository.TRequest{
+		ID:          ID,
+		Definitions: definitions,
+		Instances:   make([]*bpmn.Instance, len(request.Instances)),
+	}
+	for i := range request.Instances {
+		output.Instances[i], err = unmarshalInstance(definitions, &request.Instances[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return output, nil
+}
+
+func unmarshalInstance(definitions *bpmn.Definitions, instance *sInstance) (*bpmn.Instance, error) {
+	ID, err := uuid.Parse(instance.ID)
+	if err != nil {
+		return nil, err
+	}
+	output := &bpmn.Instance{
+		ID:     ID,
+		Tokens: make([]*bpmn.Token, len(instance.Tokens)),
+	}
+	for i := range instance.Tokens {
+		output.Tokens[i], err = unmarshalToken(definitions, output, &instance.Tokens[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return output, nil
+}
+
+func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, token *sToken) (*bpmn.Token, error) {
+	ID, err := uuid.Parse(token.ID)
+	if err != nil {
+		return nil, err
+	}
+	owner := definitions.States[token.StateIndex]
+	output := &bpmn.Token{
+		ID:         ID,
+		Instance:   instance,
+		Owner:      owner,
+		Transition: token.Transition,
+		Active:     token.Active,
+	}
+	if output.Active {
+		owner.Tokens = append(owner.Tokens, output)
+	}
+	return output, nil
+}
+
+func NewRequest(definitions *bpmn.Definitions, instances int) (repository.Request, error) {
+	request := repository.TRequest{
 		ID:          uuid.New(),
 		Definitions: definitions,
 		Instances:   []*bpmn.Instance{},
@@ -45,74 +129,14 @@ func NewRequest(definitions *bpmn.Definitions, instances int) (Request, error) {
 	return &request, nil
 }
 
-func LoadRequest(requestId uuid.UUID) (Request, error) {
+func LoadRequest(requestId uuid.UUID) (repository.Request, error) {
 	return config.storage.LoadRequest(requestId)
 }
 
-func InsertRequest(request Request) error {
+func InsertRequest(request repository.Request) error {
 	return config.storage.InsertRequest(request)
 }
 
-func UpdateRequest(request Request) error {
+func UpdateRequest(request repository.Request) error {
 	return config.storage.UpdateRequest(request)
-}
-
-func (request *tRequest) GetId() uuid.UUID {
-	return request.ID
-}
-
-func (request *tRequest) GetDefinitions() *bpmn.Definitions {
-	return request.Definitions
-}
-
-func (request *tRequest) GetInstance(index int) *bpmn.Instance {
-	return request.Instances[index]
-}
-func (request *tRequest) GetInstanceById(id uuid.UUID) *bpmn.Instance {
-	for i := range request.Instances {
-		if request.Instances[i].ID == id {
-			return request.Instances[i]
-		}
-	}
-	return nil
-}
-
-func (request *tRequest) GetToken(id uuid.UUID) (*bpmn.Token, error) {
-	for i := range request.Instances {
-		token := request.Instances[i].GetToken(id)
-		if token != nil {
-			return token, nil
-		}
-	}
-	return nil, errors.WrapStorageError(nil, "Not found token %s", id)
-}
-
-func (request *tRequest) CreateInstance() (*bpmn.Instance, uuid.UUID) {
-	uuid := uuid.New()
-	instance := bpmn.Instance{}
-	instance.Init(request.Definitions)
-	request.Instances = append(request.Instances, &instance)
-	return &instance, uuid
-}
-
-func (request *tRequest) GetInstanceIds() (uuids []uuid.UUID) {
-	uuids = make([]uuid.UUID, len(request.Instances))
-	i := 0
-	for k := range request.Instances {
-		uuids[i] = request.Instances[k].ID
-		i++
-	}
-	return
-}
-
-func (request *tRequest) TraceLog() {
-	fmt.Println("Request:", request.ID)
-	fmt.Println("======================================================")
-	for _, instance := range request.Instances {
-		fmt.Println("Instance:", instance.ID)
-		fmt.Println("------------------------------------------------------")
-		instance.TraceLog()
-		fmt.Println("------------------------------------------------------")
-		instance.TokensLog()
-	}
 }

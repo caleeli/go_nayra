@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"nayra/internal/bpmn"
 	"nayra/internal/errors"
+	"nayra/internal/repository"
 
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
@@ -92,7 +93,7 @@ func (db *mongoDB) getProcessses() *mongo.Collection {
 	return db.processes
 }
 
-func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request Request, err error) {
+func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request repository.Request, err error) {
 	requests := db.getRequests()
 	filter := bson.D{{Key: "id", Value: requestId.String()}}
 	srequest := &sRequest{}
@@ -104,13 +105,13 @@ func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request Request, err error)
 	return request, err
 }
 
-func (db *mongoDB) InsertRequest(request Request) (err error) {
+func (db *mongoDB) InsertRequest(request repository.Request) (err error) {
 	requests := db.getRequests()
 	_, err = requests.InsertOne(db.ctx, marshalRequest(request))
 	return
 }
 
-func (db *mongoDB) UpdateRequest(request Request) (err error) {
+func (db *mongoDB) UpdateRequest(request repository.Request) (err error) {
 	if db.requests == nil {
 		db.requests = db.database.Collection("requests")
 	}
