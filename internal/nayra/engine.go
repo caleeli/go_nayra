@@ -12,7 +12,7 @@ func SetupStorageService(store storage.StorageService) {
 }
 
 func CallProcess(definitionsId string, processId string) (request storage.Request, err error) {
-	definitions, err := storage.LoadBpmn(definitionsId)
+	definitions, err := storage.LoadDefinitions(definitionsId)
 	if err != nil {
 		return nil, err
 	}

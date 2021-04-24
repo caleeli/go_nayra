@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"nayra/internal/bpmn"
 	"nayra/internal/errors"
 
 	"github.com/google/uuid"
@@ -12,10 +13,11 @@ import (
 )
 
 type mongoDB struct {
-	client   *mongo.Client
-	database *mongo.Database
-	requests *mongo.Collection
-	ctx      context.Context
+	client    *mongo.Client
+	database  *mongo.Database
+	requests  *mongo.Collection
+	processes *mongo.Collection
+	ctx       context.Context
 }
 
 func NewMongoDB(
@@ -83,6 +85,13 @@ func (db *mongoDB) getRequests() *mongo.Collection {
 	return db.requests
 }
 
+func (db *mongoDB) getProcessses() *mongo.Collection {
+	if db.processes == nil {
+		db.processes = db.database.Collection("processes")
+	}
+	return db.processes
+}
+
 func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request Request, err error) {
 	requests := db.getRequests()
 	filter := bson.D{{Key: "id", Value: requestId.String()}}
@@ -115,4 +124,31 @@ func (db *mongoDB) UpdateRequest(request Request) (err error) {
 		update,
 	)
 	return
+}
+
+func (db *mongoDB) InsertDefinitions(definitions *bpmn.Definitions) (err error) {
+	processes := db.getProcessses()
+	record := db.MarshalProcess(definitions)
+	_, err = processes.InsertOne(db.ctx, record)
+	return
+}
+
+func (db *mongoDB) LoadDefinitions(id string) (*bpmn.Definitions, error) {
+	requests := db.getProcessses()
+	filter := bson.D{{Key: "id", Value: id}}
+	sdefinitions := &sDefinitions{}
+	err := requests.FindOne(db.ctx, filter).Decode(sdefinitions)
+	if err != nil {
+		return nil, err
+	}
+	definitions, err := db.UnmarshalProcess(sdefinitions)
+	if err != nil {
+		return nil, err
+	}
+	definitions.UUID, err = uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+	definitions.ParseTree()
+	return definitions, err
 }

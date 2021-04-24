@@ -6,7 +6,7 @@ import (
 
 // StartEvent from BPMN
 type StartEvent struct {
-	StartEventTrait
+	StartEventTrait `bson:"-"`
 	CatchEvent
 	XMLName        xml.Name
 	IsInterrupting bool     `xml:"isInterrupting,attr"`

@@ -61,7 +61,7 @@ func marshalToken(token *bpmn.Token) sToken {
 
 func unmarshalRequest(request *sRequest) (Request, error) {
 	ID, _ := uuid.Parse(request.ID)
-	definitions, err := LoadBpmn(request.DefinitionsId)
+	definitions, err := LoadDefinitions(request.DefinitionsId)
 	if err != nil {
 		return nil, err
 	}

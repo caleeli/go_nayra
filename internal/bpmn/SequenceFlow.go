@@ -6,7 +6,7 @@ import (
 
 // SequenceFlow from BPMN
 type SequenceFlow struct {
-	SequenceFlowTrait
+	SequenceFlowTrait `bson:"-"`
 	FlowElement
 	XMLName             xml.Name
 	ConditionExpression []Expression `xml:"conditionExpression"`

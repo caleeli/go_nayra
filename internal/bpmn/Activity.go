@@ -6,7 +6,7 @@ import (
 
 // Activity from BPMN
 type Activity struct {
-	ActivityTrait
+	ActivityTrait `bson:"-"`
 	FlowNode
 	XMLName               xml.Name
 	IoSpecification       InputOutputSpecification `xml:"ioSpecification"`

@@ -6,7 +6,7 @@ import (
 
 // Definitions from BPMN
 type Definitions struct {
-	DefinitionsTrait
+	DefinitionsTrait `bson:"-"`
 	XMLName                xml.Name
 	Import                 []Import                 `xml:"import"`
 	Extension              []Extension              `xml:"extension"`

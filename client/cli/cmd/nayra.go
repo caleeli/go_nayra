@@ -18,6 +18,7 @@ func Nayra(store storage.StorageService) *cobra.Command {
 	rootCmd := &cobra.Command{Use: "nayra"}
 	rootCmd.AddCommand(callProcessCmd())
 	rootCmd.AddCommand(transitTokenCmd())
+	rootCmd.AddCommand(importBpmnCmd())
 	return rootCmd
 }
 

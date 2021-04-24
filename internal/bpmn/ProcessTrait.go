@@ -15,5 +15,5 @@ func (node *Process) Init(definitions *Definitions) {
 		node.Calling.Connect(&StartEvent.Active)
 	}
 	node.Execute.Connect(&node.Calling)
-	
+
 }

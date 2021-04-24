@@ -6,7 +6,7 @@ import (
 
 // Process from BPMN
 type Process struct {
-	ProcessTrait
+	ProcessTrait `bson:"-"`
 	CallableElement
 	XMLName                      xml.Name
 	Auditing                     Auditing                  `xml:"auditing"`
