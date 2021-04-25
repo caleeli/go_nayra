@@ -108,6 +108,7 @@ func (instance *Instance) Trace() (trace []string) {
 		i++
 	}
 	trace[i] = "------------------------------------------------------"
+	i++
 	for _, token := range instance.Tokens {
 		active := "[.]"
 		if token.Active {
