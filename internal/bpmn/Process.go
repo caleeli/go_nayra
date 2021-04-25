@@ -53,11 +53,10 @@ type Process struct {
 	IsClosed                     bool                      `xml:"isClosed,attr"`
 	IsExecutable                 bool                      `xml:"isExecutable,attr"`
 	DefinitionalCollaborationRef string                    `xml:"definitionalCollaborationRef,attr"`
-
 }
 
 // ParseTree of components of Process.
-func (process *Process) ParseTree (definitions *Definitions) {
+func (process *Process) ParseTree(definitions *Definitions) {
 	process.CallableElement.ParseTree(definitions)
 
 	process.Init(definitions)
@@ -1381,4 +1380,3 @@ func (process *Process) GetFormalExpression(ID string) *FormalExpression {
 
 	return nil
 }
-

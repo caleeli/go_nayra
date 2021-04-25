@@ -11,14 +11,12 @@ type DataObject struct {
 	DataState      DataState `xml:"dataState"`
 	ItemSubjectRef string    `xml:"itemSubjectRef,attr"`
 	IsCollection   bool      `xml:"isCollection,attr"`
-
 }
 
 // ParseTree of components of DataObject.
-func (dataObject *DataObject) ParseTree (definitions *Definitions) {
+func (dataObject *DataObject) ParseTree(definitions *Definitions) {
 	dataObject.FlowElement.ParseTree(definitions)
 
 	dataObject.DataState.ParseTree(definitions) // DataState.
 
 }
-

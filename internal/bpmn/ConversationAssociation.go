@@ -8,14 +8,12 @@ import (
 type ConversationAssociation struct {
 	BaseElement
 	XMLName                  xml.Name
-	InnerConversationNodeRef string   `xml:"innerConversationNodeRef,attr"`
-	OuterConversationNodeRef string   `xml:"outerConversationNodeRef,attr"`
-
+	InnerConversationNodeRef string `xml:"innerConversationNodeRef,attr"`
+	OuterConversationNodeRef string `xml:"outerConversationNodeRef,attr"`
 }
 
 // ParseTree of components of ConversationAssociation.
-func (conversationAssociation *ConversationAssociation) ParseTree (definitions *Definitions) {
+func (conversationAssociation *ConversationAssociation) ParseTree(definitions *Definitions) {
 	conversationAssociation.BaseElement.ParseTree(definitions)
 
 }
-

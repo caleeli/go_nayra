@@ -13,11 +13,10 @@ type SequenceFlow struct {
 	SourceRef           string       `xml:"sourceRef,attr"`
 	TargetRef           string       `xml:"targetRef,attr"`
 	IsImmediate         bool         `xml:"isImmediate,attr"`
-
 }
 
 // ParseTree of components of SequenceFlow.
-func (sequenceFlow *SequenceFlow) ParseTree (definitions *Definitions) {
+func (sequenceFlow *SequenceFlow) ParseTree(definitions *Definitions) {
 	sequenceFlow.FlowElement.ParseTree(definitions)
 
 	sequenceFlow.Init(definitions)
@@ -40,4 +39,3 @@ func (sequenceFlow *SequenceFlow) GetExpression(ID string) *Expression {
 
 	return nil
 }
-

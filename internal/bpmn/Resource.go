@@ -10,11 +10,10 @@ type Resource struct {
 	XMLName           xml.Name
 	ResourceParameter []ResourceParameter `xml:"resourceParameter"`
 	Name              string              `xml:"name,attr"`
-
 }
 
 // ParseTree of components of Resource.
-func (resource *Resource) ParseTree (definitions *Definitions) {
+func (resource *Resource) ParseTree(definitions *Definitions) {
 	resource.RootElement.ParseTree(definitions)
 
 	for i := 0; i < len(resource.ResourceParameter); i++ {
@@ -35,4 +34,3 @@ func (resource *Resource) GetResourceParameter(ID string) *ResourceParameter {
 
 	return nil
 }
-

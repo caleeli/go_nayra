@@ -10,11 +10,10 @@ type ComplexBehaviorDefinition struct {
 	XMLName   xml.Name
 	Condition []FormalExpression   `xml:"condition"`
 	Event     []ImplicitThrowEvent `xml:"event"`
-
 }
 
 // ParseTree of components of ComplexBehaviorDefinition.
-func (complexBehaviorDefinition *ComplexBehaviorDefinition) ParseTree (definitions *Definitions) {
+func (complexBehaviorDefinition *ComplexBehaviorDefinition) ParseTree(definitions *Definitions) {
 	complexBehaviorDefinition.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(complexBehaviorDefinition.Condition); i++ {
@@ -52,4 +51,3 @@ func (complexBehaviorDefinition *ComplexBehaviorDefinition) GetImplicitThrowEven
 
 	return nil
 }
-

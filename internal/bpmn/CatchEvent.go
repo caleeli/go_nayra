@@ -23,11 +23,10 @@ type CatchEvent struct {
 	TimerEventDefinition       []TimerEventDefinition       `xml:"timerEventDefinition"`
 	EventDefinitionRef         []string                     `xml:"eventDefinitionRef"`
 	ParallelMultiple           bool                         `xml:"parallelMultiple,attr"`
-
 }
 
 // ParseTree of components of CatchEvent.
-func (catchEvent *CatchEvent) ParseTree (definitions *Definitions) {
+func (catchEvent *CatchEvent) ParseTree(definitions *Definitions) {
 	catchEvent.Event.ParseTree(definitions)
 
 	for i := 0; i < len(catchEvent.DataOutput); i++ {
@@ -237,4 +236,3 @@ func (catchEvent *CatchEvent) GetTimerEventDefinition(ID string) *TimerEventDefi
 
 	return nil
 }
-

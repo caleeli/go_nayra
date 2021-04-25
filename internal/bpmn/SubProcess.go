@@ -43,11 +43,10 @@ type SubProcess struct {
 	Group                  []Group                  `xml:"group"`
 	TextAnnotation         []TextAnnotation         `xml:"textAnnotation"`
 	TriggeredByEvent       bool                     `xml:"triggeredByEvent,attr"`
-
 }
 
 // ParseTree of components of SubProcess.
-func (subProcess *SubProcess) ParseTree (definitions *Definitions) {
+func (subProcess *SubProcess) ParseTree(definitions *Definitions) {
 	subProcess.Activity.ParseTree(definitions)
 
 	for i := 0; i < len(subProcess.LaneSet); i++ {
@@ -980,4 +979,3 @@ func (subProcess *SubProcess) GetTextAnnotation(ID string) *TextAnnotation {
 
 	return nil
 }
-

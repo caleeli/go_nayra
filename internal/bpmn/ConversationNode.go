@@ -12,11 +12,10 @@ type ConversationNode struct {
 	MessageFlowRef []string         `xml:"messageFlowRef"`
 	CorrelationKey []CorrelationKey `xml:"correlationKey"`
 	Name           string           `xml:"name,attr"`
-
 }
 
 // ParseTree of components of ConversationNode.
-func (conversationNode *ConversationNode) ParseTree (definitions *Definitions) {
+func (conversationNode *ConversationNode) ParseTree(definitions *Definitions) {
 	conversationNode.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(conversationNode.CorrelationKey); i++ {
@@ -37,4 +36,3 @@ func (conversationNode *ConversationNode) GetCorrelationKey(ID string) *Correlat
 
 	return nil
 }
-

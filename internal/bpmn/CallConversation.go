@@ -10,11 +10,10 @@ type CallConversation struct {
 	XMLName                xml.Name
 	ParticipantAssociation []ParticipantAssociation `xml:"participantAssociation"`
 	CalledCollaborationRef string                   `xml:"calledCollaborationRef,attr"`
-
 }
 
 // ParseTree of components of CallConversation.
-func (callConversation *CallConversation) ParseTree (definitions *Definitions) {
+func (callConversation *CallConversation) ParseTree(definitions *Definitions) {
 	callConversation.ConversationNode.ParseTree(definitions)
 
 	for i := 0; i < len(callConversation.ParticipantAssociation); i++ {
@@ -35,4 +34,3 @@ func (callConversation *CallConversation) GetParticipantAssociation(ID string) *
 
 	return nil
 }
-

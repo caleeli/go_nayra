@@ -10,11 +10,10 @@ type ComplexGateway struct {
 	XMLName             xml.Name
 	ActivationCondition []Expression `xml:"activationCondition"`
 	Default             string       `xml:"default,attr"`
-
 }
 
 // ParseTree of components of ComplexGateway.
-func (complexGateway *ComplexGateway) ParseTree (definitions *Definitions) {
+func (complexGateway *ComplexGateway) ParseTree(definitions *Definitions) {
 	complexGateway.Gateway.ParseTree(definitions)
 
 	for i := 0; i < len(complexGateway.ActivationCondition); i++ {
@@ -35,4 +34,3 @@ func (complexGateway *ComplexGateway) GetExpression(ID string) *Expression {
 
 	return nil
 }
-

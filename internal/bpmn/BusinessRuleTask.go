@@ -8,13 +8,11 @@ import (
 type BusinessRuleTask struct {
 	Task
 	XMLName        xml.Name
-	Implementation string   `xml:"implementation,attr"`
-
+	Implementation string `xml:"implementation,attr"`
 }
 
 // ParseTree of components of BusinessRuleTask.
-func (businessRuleTask *BusinessRuleTask) ParseTree (definitions *Definitions) {
+func (businessRuleTask *BusinessRuleTask) ParseTree(definitions *Definitions) {
 	businessRuleTask.Task.ParseTree(definitions)
 
 }
-

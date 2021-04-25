@@ -10,12 +10,10 @@ type MessageEventDefinition struct {
 	XMLName      xml.Name
 	OperationRef []string `xml:"operationRef"`
 	MessageRef   string   `xml:"messageRef,attr"`
-
 }
 
 // ParseTree of components of MessageEventDefinition.
-func (messageEventDefinition *MessageEventDefinition) ParseTree (definitions *Definitions) {
+func (messageEventDefinition *MessageEventDefinition) ParseTree(definitions *Definitions) {
 	messageEventDefinition.EventDefinition.ParseTree(definitions)
 
 }
-

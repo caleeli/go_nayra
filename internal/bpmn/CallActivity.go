@@ -8,13 +8,11 @@ import (
 type CallActivity struct {
 	Activity
 	XMLName       xml.Name
-	CalledElement string   `xml:"calledElement,attr"`
-
+	CalledElement string `xml:"calledElement,attr"`
 }
 
 // ParseTree of components of CallActivity.
-func (callActivity *CallActivity) ParseTree (definitions *Definitions) {
+func (callActivity *CallActivity) ParseTree(definitions *Definitions) {
 	callActivity.Activity.ParseTree(definitions)
 
 }
-

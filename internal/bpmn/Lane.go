@@ -13,11 +13,10 @@ type Lane struct {
 	ChildLaneSet        []LaneSet     `xml:"childLaneSet"`
 	Name                string        `xml:"name,attr"`
 	PartitionElementRef string        `xml:"partitionElementRef,attr"`
-
 }
 
 // ParseTree of components of Lane.
-func (lane *Lane) ParseTree (definitions *Definitions) {
+func (lane *Lane) ParseTree(definitions *Definitions) {
 	lane.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(lane.PartitionElement); i++ {
@@ -81,4 +80,3 @@ func (lane *Lane) GetLane(ID string) *Lane {
 
 	return nil
 }
-

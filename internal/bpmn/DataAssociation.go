@@ -12,11 +12,10 @@ type DataAssociation struct {
 	TargetRef      []string           `xml:"targetRef"`
 	Transformation []FormalExpression `xml:"transformation"`
 	Assignment     []Assignment       `xml:"assignment"`
-
 }
 
 // ParseTree of components of DataAssociation.
-func (dataAssociation *DataAssociation) ParseTree (definitions *Definitions) {
+func (dataAssociation *DataAssociation) ParseTree(definitions *Definitions) {
 	dataAssociation.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(dataAssociation.Transformation); i++ {
@@ -67,4 +66,3 @@ func (dataAssociation *DataAssociation) GetExpression(ID string) *Expression {
 
 	return nil
 }
-

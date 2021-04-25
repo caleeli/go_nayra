@@ -38,11 +38,10 @@ type Choreography struct {
 	Task                   []Task                   `xml:"task"`
 	Transaction            []Transaction            `xml:"transaction"`
 	UserTask               []UserTask               `xml:"userTask"`
-
 }
 
 // ParseTree of components of Choreography.
-func (choreography *Choreography) ParseTree (definitions *Definitions) {
+func (choreography *Choreography) ParseTree(definitions *Definitions) {
 	choreography.Collaboration.ParseTree(definitions)
 
 	for i := 0; i < len(choreography.AdHocSubProcess); i++ {
@@ -1211,4 +1210,3 @@ func (choreography *Choreography) GetTextAnnotation(ID string) *TextAnnotation {
 
 	return nil
 }
-

@@ -10,11 +10,10 @@ type BaseElementWithMixedContent struct {
 	Documentation     []Documentation   `xml:"documentation"`
 	ExtensionElements ExtensionElements `xml:"extensionElements"`
 	ID                string            `xml:"id,attr"`
-
 }
 
 // ParseTree of components of BaseElementWithMixedContent.
-func (baseElementWithMixedContent *BaseElementWithMixedContent) ParseTree (definitions *Definitions) {
+func (baseElementWithMixedContent *BaseElementWithMixedContent) ParseTree(definitions *Definitions) {
 
 	for i := 0; i < len(baseElementWithMixedContent.Documentation); i++ {
 		baseElementWithMixedContent.Documentation[i].ParseTree(definitions)
@@ -36,4 +35,3 @@ func (baseElementWithMixedContent *BaseElementWithMixedContent) GetDocumentation
 
 	return nil
 }
-

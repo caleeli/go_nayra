@@ -13,12 +13,10 @@ type Operation struct {
 	ErrorRef          []string `xml:"errorRef"`
 	Name              string   `xml:"name,attr"`
 	ImplementationRef string   `xml:"implementationRef,attr"`
-
 }
 
 // ParseTree of components of Operation.
-func (operation *Operation) ParseTree (definitions *Definitions) {
+func (operation *Operation) ParseTree(definitions *Definitions) {
 	operation.BaseElement.ParseTree(definitions)
 
 }
-

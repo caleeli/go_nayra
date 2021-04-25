@@ -8,14 +8,12 @@ import (
 type FormalExpression struct {
 	Expression
 	XMLName            xml.Name
-	Language           string   `xml:"language,attr"`
-	EvaluatesToTypeRef string   `xml:"evaluatesToTypeRef,attr"`
-
+	Language           string `xml:"language,attr"`
+	EvaluatesToTypeRef string `xml:"evaluatesToTypeRef,attr"`
 }
 
 // ParseTree of components of FormalExpression.
-func (formalExpression *FormalExpression) ParseTree (definitions *Definitions) {
+func (formalExpression *FormalExpression) ParseTree(definitions *Definitions) {
 	formalExpression.Expression.ParseTree(definitions)
 
 }
-

@@ -6,7 +6,7 @@ import (
 
 // Definitions from BPMN
 type Definitions struct {
-	DefinitionsTrait `bson:"-"`
+	DefinitionsTrait       `bson:"-"`
 	XMLName                xml.Name
 	Import                 []Import                 `xml:"import"`
 	Extension              []Extension              `xml:"extension"`
@@ -38,11 +38,10 @@ type Definitions struct {
 	TypeLanguage           string                   `xml:"typeLanguage,attr"`
 	Exporter               string                   `xml:"exporter,attr"`
 	ExporterVersion        string                   `xml:"exporterVersion,attr"`
-
 }
 
 // ParseTree of components of Definitions.
-func (definitions *Definitions) ParseTree () {
+func (definitions *Definitions) ParseTree() {
 
 	for i := 0; i < len(definitions.Import); i++ {
 		definitions.Import[i].ParseTree(definitions)
@@ -1213,4 +1212,3 @@ func (definitions *Definitions) GetRelationship(ID string) *Relationship {
 
 	return nil
 }
-

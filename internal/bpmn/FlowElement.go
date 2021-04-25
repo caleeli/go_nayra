@@ -12,11 +12,10 @@ type FlowElement struct {
 	Monitoring       Monitoring `xml:"monitoring"`
 	CategoryValueRef []string   `xml:"categoryValueRef"`
 	Name             string     `xml:"name,attr"`
-
 }
 
 // ParseTree of components of FlowElement.
-func (flowElement *FlowElement) ParseTree (definitions *Definitions) {
+func (flowElement *FlowElement) ParseTree(definitions *Definitions) {
 	flowElement.BaseElement.ParseTree(definitions)
 
 	flowElement.Auditing.ParseTree(definitions) // Auditing.
@@ -24,4 +23,3 @@ func (flowElement *FlowElement) ParseTree (definitions *Definitions) {
 	flowElement.Monitoring.ParseTree(definitions) // Monitoring.
 
 }
-

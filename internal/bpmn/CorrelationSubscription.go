@@ -10,11 +10,10 @@ type CorrelationSubscription struct {
 	XMLName                    xml.Name
 	CorrelationPropertyBinding []CorrelationPropertyBinding `xml:"correlationPropertyBinding"`
 	CorrelationKeyRef          string                       `xml:"correlationKeyRef,attr"`
-
 }
 
 // ParseTree of components of CorrelationSubscription.
-func (correlationSubscription *CorrelationSubscription) ParseTree (definitions *Definitions) {
+func (correlationSubscription *CorrelationSubscription) ParseTree(definitions *Definitions) {
 	correlationSubscription.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(correlationSubscription.CorrelationPropertyBinding); i++ {
@@ -48,4 +47,3 @@ func (correlationSubscription *CorrelationSubscription) GetFormalExpression(ID s
 
 	return nil
 }
-

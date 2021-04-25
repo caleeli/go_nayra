@@ -12,11 +12,10 @@ type CallableElement struct {
 	IoSpecification       InputOutputSpecification `xml:"ioSpecification"`
 	IoBinding             []InputOutputBinding     `xml:"ioBinding"`
 	Name                  string                   `xml:"name,attr"`
-
 }
 
 // ParseTree of components of CallableElement.
-func (callableElement *CallableElement) ParseTree (definitions *Definitions) {
+func (callableElement *CallableElement) ParseTree(definitions *Definitions) {
 	callableElement.RootElement.ParseTree(definitions)
 
 	callableElement.IoSpecification.ParseTree(definitions) // InputOutputSpecification.
@@ -39,4 +38,3 @@ func (callableElement *CallableElement) GetInputOutputBinding(ID string) *InputO
 
 	return nil
 }
-

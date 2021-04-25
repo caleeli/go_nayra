@@ -9,11 +9,10 @@ type Event struct {
 	FlowNode
 	XMLName  xml.Name
 	Property []Property `xml:"property"`
-
 }
 
 // ParseTree of components of Event.
-func (event *Event) ParseTree (definitions *Definitions) {
+func (event *Event) ParseTree(definitions *Definitions) {
 	event.FlowNode.ParseTree(definitions)
 
 	for i := 0; i < len(event.Property); i++ {
@@ -34,4 +33,3 @@ func (event *Event) GetProperty(ID string) *Property {
 
 	return nil
 }
-

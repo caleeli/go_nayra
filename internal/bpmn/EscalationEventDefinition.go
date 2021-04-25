@@ -8,13 +8,11 @@ import (
 type EscalationEventDefinition struct {
 	EventDefinition
 	XMLName       xml.Name
-	EscalationRef string   `xml:"escalationRef,attr"`
-
+	EscalationRef string `xml:"escalationRef,attr"`
 }
 
 // ParseTree of components of EscalationEventDefinition.
-func (escalationEventDefinition *EscalationEventDefinition) ParseTree (definitions *Definitions) {
+func (escalationEventDefinition *EscalationEventDefinition) ParseTree(definitions *Definitions) {
 	escalationEventDefinition.EventDefinition.ParseTree(definitions)
 
 }
-

@@ -7,12 +7,10 @@ import (
 // Text from BPMN
 type Text struct {
 	XMLName xml.Name
-	Body    string   `xml:",chardata"`
-
+	Body    string `xml:",chardata"`
 }
 
 // ParseTree of components of Text.
-func (text *Text) ParseTree (definitions *Definitions) {
+func (text *Text) ParseTree(definitions *Definitions) {
 
 }
-

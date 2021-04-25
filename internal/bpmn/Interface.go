@@ -11,11 +11,10 @@ type Interface struct {
 	Operation         []Operation `xml:"operation"`
 	Name              string      `xml:"name,attr"`
 	ImplementationRef string      `xml:"implementationRef,attr"`
-
 }
 
 // ParseTree of components of Interface.
-func (_interface *Interface) ParseTree (definitions *Definitions) {
+func (_interface *Interface) ParseTree(definitions *Definitions) {
 	_interface.RootElement.ParseTree(definitions)
 
 	for i := 0; i < len(_interface.Operation); i++ {
@@ -36,4 +35,3 @@ func (_interface *Interface) GetOperation(ID string) *Operation {
 
 	return nil
 }
-

@@ -10,11 +10,10 @@ type BaseElement struct {
 	Documentation     []Documentation   `xml:"documentation"`
 	ExtensionElements ExtensionElements `xml:"extensionElements"`
 	ID                string            `xml:"id,attr"`
-
 }
 
 // ParseTree of components of BaseElement.
-func (baseElement *BaseElement) ParseTree (definitions *Definitions) {
+func (baseElement *BaseElement) ParseTree(definitions *Definitions) {
 
 	for i := 0; i < len(baseElement.Documentation); i++ {
 		baseElement.Documentation[i].ParseTree(definitions)
@@ -36,4 +35,3 @@ func (baseElement *BaseElement) GetDocumentation(ID string) *Documentation {
 
 	return nil
 }
-

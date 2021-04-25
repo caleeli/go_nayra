@@ -8,12 +8,10 @@ import (
 type Task struct {
 	Activity
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of Task.
-func (task *Task) ParseTree (definitions *Definitions) {
+func (task *Task) ParseTree(definitions *Definitions) {
 	task.Activity.ParseTree(definitions)
 
 }
-

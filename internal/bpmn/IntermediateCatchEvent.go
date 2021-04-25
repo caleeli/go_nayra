@@ -8,12 +8,10 @@ import (
 type IntermediateCatchEvent struct {
 	CatchEvent
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of IntermediateCatchEvent.
-func (intermediateCatchEvent *IntermediateCatchEvent) ParseTree (definitions *Definitions) {
+func (intermediateCatchEvent *IntermediateCatchEvent) ParseTree(definitions *Definitions) {
 	intermediateCatchEvent.CatchEvent.ParseTree(definitions)
 
 }
-

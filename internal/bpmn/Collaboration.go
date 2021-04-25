@@ -24,11 +24,10 @@ type Collaboration struct {
 	ConversationLink        []ConversationLink        `xml:"conversationLink"`
 	Name                    string                    `xml:"name,attr"`
 	IsClosed                bool                      `xml:"isClosed,attr"`
-
 }
 
 // ParseTree of components of Collaboration.
-func (collaboration *Collaboration) ParseTree (definitions *Definitions) {
+func (collaboration *Collaboration) ParseTree(definitions *Definitions) {
 	collaboration.RootElement.ParseTree(definitions)
 
 	for i := 0; i < len(collaboration.Participant); i++ {
@@ -288,4 +287,3 @@ func (collaboration *Collaboration) GetConversationLink(ID string) *Conversation
 
 	return nil
 }
-

@@ -10,11 +10,10 @@ type GlobalUserTask struct {
 	XMLName        xml.Name
 	Rendering      []Rendering `xml:"rendering"`
 	Implementation string      `xml:"implementation,attr"`
-
 }
 
 // ParseTree of components of GlobalUserTask.
-func (globalUserTask *GlobalUserTask) ParseTree (definitions *Definitions) {
+func (globalUserTask *GlobalUserTask) ParseTree(definitions *Definitions) {
 	globalUserTask.GlobalTask.ParseTree(definitions)
 
 	for i := 0; i < len(globalUserTask.Rendering); i++ {
@@ -35,4 +34,3 @@ func (globalUserTask *GlobalUserTask) GetRendering(ID string) *Rendering {
 
 	return nil
 }
-

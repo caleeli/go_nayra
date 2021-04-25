@@ -10,11 +10,10 @@ type Category struct {
 	XMLName       xml.Name
 	CategoryValue []CategoryValue `xml:"categoryValue"`
 	Name          string          `xml:"name,attr"`
-
 }
 
 // ParseTree of components of Category.
-func (category *Category) ParseTree (definitions *Definitions) {
+func (category *Category) ParseTree(definitions *Definitions) {
 	category.RootElement.ParseTree(definitions)
 
 	for i := 0; i < len(category.CategoryValue); i++ {
@@ -35,4 +34,3 @@ func (category *Category) GetCategoryValue(ID string) *CategoryValue {
 
 	return nil
 }
-

@@ -10,11 +10,10 @@ type CallChoreography struct {
 	XMLName                xml.Name
 	ParticipantAssociation []ParticipantAssociation `xml:"participantAssociation"`
 	CalledChoreographyRef  string                   `xml:"calledChoreographyRef,attr"`
-
 }
 
 // ParseTree of components of CallChoreography.
-func (callChoreography *CallChoreography) ParseTree (definitions *Definitions) {
+func (callChoreography *CallChoreography) ParseTree(definitions *Definitions) {
 	callChoreography.ChoreographyActivity.ParseTree(definitions)
 
 	for i := 0; i < len(callChoreography.ParticipantAssociation); i++ {
@@ -35,4 +34,3 @@ func (callChoreography *CallChoreography) GetParticipantAssociation(ID string) *
 
 	return nil
 }
-

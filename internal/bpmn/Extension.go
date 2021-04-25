@@ -10,11 +10,10 @@ type Extension struct {
 	Documentation  []Documentation `xml:"documentation"`
 	Definition     string          `xml:"definition,attr"`
 	MustUnderstand bool            `xml:"mustUnderstand,attr"`
-
 }
 
 // ParseTree of components of Extension.
-func (extension *Extension) ParseTree (definitions *Definitions) {
+func (extension *Extension) ParseTree(definitions *Definitions) {
 
 	for i := 0; i < len(extension.Documentation); i++ {
 		extension.Documentation[i].ParseTree(definitions)
@@ -34,4 +33,3 @@ func (extension *Extension) GetDocumentation(ID string) *Documentation {
 
 	return nil
 }
-

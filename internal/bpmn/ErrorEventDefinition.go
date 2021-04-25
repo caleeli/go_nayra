@@ -8,13 +8,11 @@ import (
 type ErrorEventDefinition struct {
 	EventDefinition
 	XMLName  xml.Name
-	ErrorRef string   `xml:"errorRef,attr"`
-
+	ErrorRef string `xml:"errorRef,attr"`
 }
 
 // ParseTree of components of ErrorEventDefinition.
-func (errorEventDefinition *ErrorEventDefinition) ParseTree (definitions *Definitions) {
+func (errorEventDefinition *ErrorEventDefinition) ParseTree(definitions *Definitions) {
 	errorEventDefinition.EventDefinition.ParseTree(definitions)
 
 }
-

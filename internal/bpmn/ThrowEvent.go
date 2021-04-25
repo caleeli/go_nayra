@@ -22,11 +22,10 @@ type ThrowEvent struct {
 	TerminateEventDefinition   []TerminateEventDefinition   `xml:"terminateEventDefinition"`
 	TimerEventDefinition       []TimerEventDefinition       `xml:"timerEventDefinition"`
 	EventDefinitionRef         []string                     `xml:"eventDefinitionRef"`
-
 }
 
 // ParseTree of components of ThrowEvent.
-func (throwEvent *ThrowEvent) ParseTree (definitions *Definitions) {
+func (throwEvent *ThrowEvent) ParseTree(definitions *Definitions) {
 	throwEvent.Event.ParseTree(definitions)
 
 	for i := 0; i < len(throwEvent.DataInput); i++ {
@@ -236,4 +235,3 @@ func (throwEvent *ThrowEvent) GetTimerEventDefinition(ID string) *TimerEventDefi
 
 	return nil
 }
-

@@ -8,13 +8,11 @@ import (
 type ResourceRole struct {
 	BaseElement
 	XMLName xml.Name
-	Name    string   `xml:"name,attr"`
-
+	Name    string `xml:"name,attr"`
 }
 
 // ParseTree of components of ResourceRole.
-func (resourceRole *ResourceRole) ParseTree (definitions *Definitions) {
+func (resourceRole *ResourceRole) ParseTree(definitions *Definitions) {
 	resourceRole.BaseElement.ParseTree(definitions)
 
 }
-

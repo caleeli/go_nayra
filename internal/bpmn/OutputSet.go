@@ -13,12 +13,10 @@ type OutputSet struct {
 	WhileExecutingOutputRefs []string `xml:"whileExecutingOutputRefs"`
 	InputSetRefs             []string `xml:"inputSetRefs"`
 	Name                     string   `xml:"name,attr"`
-
 }
 
 // ParseTree of components of OutputSet.
-func (outputSet *OutputSet) ParseTree (definitions *Definitions) {
+func (outputSet *OutputSet) ParseTree(definitions *Definitions) {
 	outputSet.BaseElement.ParseTree(definitions)
 
 }
-

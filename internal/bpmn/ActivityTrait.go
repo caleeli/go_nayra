@@ -46,5 +46,5 @@ func (node *Activity) Init(definitions *Definitions) {
 		Incoming := &node.Incoming[i]
 		definitions.GetSequenceFlow(*Incoming).Transit.Connect(&node.Ready)
 	}
-	
+
 }

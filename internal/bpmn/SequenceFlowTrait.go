@@ -8,5 +8,5 @@ type SequenceFlowTrait struct {
 // Init SequenceFlow state definition
 func (node *SequenceFlow) Init(definitions *Definitions) {
 	node.Transit.Init(definitions, node, "Transit")
-	
+
 }

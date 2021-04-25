@@ -10,11 +10,10 @@ type CorrelationPropertyRetrievalExpression struct {
 	XMLName     xml.Name
 	MessagePath []FormalExpression `xml:"messagePath"`
 	MessageRef  string             `xml:"messageRef,attr"`
-
 }
 
 // ParseTree of components of CorrelationPropertyRetrievalExpression.
-func (correlationPropertyRetrievalExpression *CorrelationPropertyRetrievalExpression) ParseTree (definitions *Definitions) {
+func (correlationPropertyRetrievalExpression *CorrelationPropertyRetrievalExpression) ParseTree(definitions *Definitions) {
 	correlationPropertyRetrievalExpression.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(correlationPropertyRetrievalExpression.MessagePath); i++ {
@@ -35,4 +34,3 @@ func (correlationPropertyRetrievalExpression *CorrelationPropertyRetrievalExpres
 
 	return nil
 }
-

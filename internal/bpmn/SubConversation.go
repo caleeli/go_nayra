@@ -11,11 +11,10 @@ type SubConversation struct {
 	CallConversation []CallConversation `xml:"callConversation"`
 	Conversation     []Conversation     `xml:"conversation"`
 	SubConversation  []SubConversation  `xml:"subConversation"`
-
 }
 
 // ParseTree of components of SubConversation.
-func (subConversation *SubConversation) ParseTree (definitions *Definitions) {
+func (subConversation *SubConversation) ParseTree(definitions *Definitions) {
 	subConversation.ConversationNode.ParseTree(definitions)
 
 	for i := 0; i < len(subConversation.CallConversation); i++ {
@@ -83,4 +82,3 @@ func (subConversation *SubConversation) GetSubConversation(ID string) *SubConver
 
 	return nil
 }
-

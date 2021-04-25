@@ -13,14 +13,12 @@ type DataStore struct {
 	Capacity       int       `xml:"capacity,attr"`
 	IsUnlimited    bool      `xml:"isUnlimited,attr"`
 	ItemSubjectRef string    `xml:"itemSubjectRef,attr"`
-
 }
 
 // ParseTree of components of DataStore.
-func (dataStore *DataStore) ParseTree (definitions *Definitions) {
+func (dataStore *DataStore) ParseTree(definitions *Definitions) {
 	dataStore.RootElement.ParseTree(definitions)
 
 	dataStore.DataState.ParseTree(definitions) // DataState.
 
 }
-

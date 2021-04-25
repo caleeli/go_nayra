@@ -10,11 +10,10 @@ type CorrelationPropertyBinding struct {
 	XMLName                xml.Name
 	DataPath               []FormalExpression `xml:"dataPath"`
 	CorrelationPropertyRef string             `xml:"correlationPropertyRef,attr"`
-
 }
 
 // ParseTree of components of CorrelationPropertyBinding.
-func (correlationPropertyBinding *CorrelationPropertyBinding) ParseTree (definitions *Definitions) {
+func (correlationPropertyBinding *CorrelationPropertyBinding) ParseTree(definitions *Definitions) {
 	correlationPropertyBinding.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(correlationPropertyBinding.DataPath); i++ {
@@ -35,4 +34,3 @@ func (correlationPropertyBinding *CorrelationPropertyBinding) GetFormalExpressio
 
 	return nil
 }
-

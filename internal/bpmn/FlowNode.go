@@ -10,12 +10,10 @@ type FlowNode struct {
 	XMLName  xml.Name
 	Incoming []string `xml:"incoming"`
 	Outgoing []string `xml:"outgoing"`
-
 }
 
 // ParseTree of components of FlowNode.
-func (flowNode *FlowNode) ParseTree (definitions *Definitions) {
+func (flowNode *FlowNode) ParseTree(definitions *Definitions) {
 	flowNode.FlowElement.ParseTree(definitions)
 
 }
-

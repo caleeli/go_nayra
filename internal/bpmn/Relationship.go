@@ -12,12 +12,10 @@ type Relationship struct {
 	Target    []string `xml:"target"`
 	Type      string   `xml:"type,attr"`
 	Direction string   `xml:"direction,attr"`
-
 }
 
 // ParseTree of components of Relationship.
-func (relationship *Relationship) ParseTree (definitions *Definitions) {
+func (relationship *Relationship) ParseTree(definitions *Definitions) {
 	relationship.BaseElement.ParseTree(definitions)
 
 }
-

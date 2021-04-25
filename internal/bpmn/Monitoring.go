@@ -8,12 +8,10 @@ import (
 type Monitoring struct {
 	BaseElement
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of Monitoring.
-func (monitoring *Monitoring) ParseTree (definitions *Definitions) {
+func (monitoring *Monitoring) ParseTree(definitions *Definitions) {
 	monitoring.BaseElement.ParseTree(definitions)
 
 }
-

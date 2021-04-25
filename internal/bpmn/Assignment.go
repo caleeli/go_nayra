@@ -10,11 +10,10 @@ type Assignment struct {
 	XMLName xml.Name
 	From    []Expression `xml:"from"`
 	To      []Expression `xml:"to"`
-
 }
 
 // ParseTree of components of Assignment.
-func (assignment *Assignment) ParseTree (definitions *Definitions) {
+func (assignment *Assignment) ParseTree(definitions *Definitions) {
 	assignment.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(assignment.From); i++ {
@@ -46,4 +45,3 @@ func (assignment *Assignment) GetExpression(ID string) *Expression {
 
 	return nil
 }
-

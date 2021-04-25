@@ -18,5 +18,5 @@ func (node *StartEvent) Init(definitions *Definitions) {
 	}
 	node.Execute.Connect(&node.Starting)
 	node.Starting.Connect(&node.Active)
-	
+
 }

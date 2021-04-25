@@ -8,12 +8,10 @@ import (
 type Rendering struct {
 	BaseElement
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of Rendering.
-func (rendering *Rendering) ParseTree (definitions *Definitions) {
+func (rendering *Rendering) ParseTree(definitions *Definitions) {
 	rendering.BaseElement.ParseTree(definitions)
 
 }
-

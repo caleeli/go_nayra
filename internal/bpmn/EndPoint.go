@@ -8,12 +8,10 @@ import (
 type EndPoint struct {
 	RootElement
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of EndPoint.
-func (endPoint *EndPoint) ParseTree (definitions *Definitions) {
+func (endPoint *EndPoint) ParseTree(definitions *Definitions) {
 	endPoint.RootElement.ParseTree(definitions)
 
 }
-

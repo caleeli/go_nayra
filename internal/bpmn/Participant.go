@@ -13,14 +13,12 @@ type Participant struct {
 	ParticipantMultiplicity ParticipantMultiplicity `xml:"participantMultiplicity"`
 	Name                    string                  `xml:"name,attr"`
 	ProcessRef              string                  `xml:"processRef,attr"`
-
 }
 
 // ParseTree of components of Participant.
-func (participant *Participant) ParseTree (definitions *Definitions) {
+func (participant *Participant) ParseTree(definitions *Definitions) {
 	participant.BaseElement.ParseTree(definitions)
 
 	participant.ParticipantMultiplicity.ParseTree(definitions) // ParticipantMultiplicity.
 
 }
-

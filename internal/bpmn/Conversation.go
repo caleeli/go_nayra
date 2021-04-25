@@ -8,12 +8,10 @@ import (
 type Conversation struct {
 	ConversationNode
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of Conversation.
-func (conversation *Conversation) ParseTree (definitions *Definitions) {
+func (conversation *Conversation) ParseTree(definitions *Definitions) {
 	conversation.ConversationNode.ParseTree(definitions)
 
 }
-

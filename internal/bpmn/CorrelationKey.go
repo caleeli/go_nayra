@@ -10,12 +10,10 @@ type CorrelationKey struct {
 	XMLName                xml.Name
 	CorrelationPropertyRef []string `xml:"correlationPropertyRef"`
 	Name                   string   `xml:"name,attr"`
-
 }
 
 // ParseTree of components of CorrelationKey.
-func (correlationKey *CorrelationKey) ParseTree (definitions *Definitions) {
+func (correlationKey *CorrelationKey) ParseTree(definitions *Definitions) {
 	correlationKey.BaseElement.ParseTree(definitions)
 
 }
-

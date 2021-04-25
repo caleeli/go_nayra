@@ -12,11 +12,10 @@ type ChoreographyActivity struct {
 	CorrelationKey           []CorrelationKey `xml:"correlationKey"`
 	InitiatingParticipantRef string           `xml:"initiatingParticipantRef,attr"`
 	LoopType                 string           `xml:"loopType,attr"`
-
 }
 
 // ParseTree of components of ChoreographyActivity.
-func (choreographyActivity *ChoreographyActivity) ParseTree (definitions *Definitions) {
+func (choreographyActivity *ChoreographyActivity) ParseTree(definitions *Definitions) {
 	choreographyActivity.FlowNode.ParseTree(definitions)
 
 	for i := 0; i < len(choreographyActivity.CorrelationKey); i++ {
@@ -37,4 +36,3 @@ func (choreographyActivity *ChoreographyActivity) GetCorrelationKey(ID string) *
 
 	return nil
 }
-

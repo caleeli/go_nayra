@@ -8,12 +8,10 @@ import (
 type DataOutputAssociation struct {
 	DataAssociation
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of DataOutputAssociation.
-func (dataOutputAssociation *DataOutputAssociation) ParseTree (definitions *Definitions) {
+func (dataOutputAssociation *DataOutputAssociation) ParseTree(definitions *Definitions) {
 	dataOutputAssociation.DataAssociation.ParseTree(definitions)
 
 }
-

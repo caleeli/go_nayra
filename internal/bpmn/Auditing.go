@@ -8,12 +8,10 @@ import (
 type Auditing struct {
 	BaseElement
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of Auditing.
-func (auditing *Auditing) ParseTree (definitions *Definitions) {
+func (auditing *Auditing) ParseTree(definitions *Definitions) {
 	auditing.BaseElement.ParseTree(definitions)
 
 }
-

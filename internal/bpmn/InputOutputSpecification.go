@@ -12,11 +12,10 @@ type InputOutputSpecification struct {
 	DataOutput []DataOutput `xml:"dataOutput"`
 	InputSet   []InputSet   `xml:"inputSet"`
 	OutputSet  []OutputSet  `xml:"outputSet"`
-
 }
 
 // ParseTree of components of InputOutputSpecification.
-func (inputOutputSpecification *InputOutputSpecification) ParseTree (definitions *Definitions) {
+func (inputOutputSpecification *InputOutputSpecification) ParseTree(definitions *Definitions) {
 	inputOutputSpecification.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(inputOutputSpecification.DataInput); i++ {
@@ -88,4 +87,3 @@ func (inputOutputSpecification *InputOutputSpecification) GetOutputSet(ID string
 
 	return nil
 }
-

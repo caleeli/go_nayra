@@ -15,5 +15,5 @@ func (node *EndEvent) Init(definitions *Definitions) {
 		definitions.GetSequenceFlow(*Incoming).Transit.Connect(&node.Triggered)
 	}
 	node.Triggered.Connect(&node.Ending)
-	
+
 }

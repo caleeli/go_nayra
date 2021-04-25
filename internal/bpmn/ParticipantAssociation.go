@@ -10,12 +10,10 @@ type ParticipantAssociation struct {
 	XMLName             xml.Name
 	InnerParticipantRef []string `xml:"innerParticipantRef"`
 	OuterParticipantRef []string `xml:"outerParticipantRef"`
-
 }
 
 // ParseTree of components of ParticipantAssociation.
-func (participantAssociation *ParticipantAssociation) ParseTree (definitions *Definitions) {
+func (participantAssociation *ParticipantAssociation) ParseTree(definitions *Definitions) {
 	participantAssociation.BaseElement.ParseTree(definitions)
 
 }
-

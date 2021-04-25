@@ -19,11 +19,10 @@ type MultiInstanceLoopCharacteristics struct {
 	Behavior                  string                      `xml:"behavior,attr"`
 	OneBehaviorEventRef       string                      `xml:"oneBehaviorEventRef,attr"`
 	NoneBehaviorEventRef      string                      `xml:"noneBehaviorEventRef,attr"`
-
 }
 
 // ParseTree of components of MultiInstanceLoopCharacteristics.
-func (multiInstanceLoopCharacteristics *MultiInstanceLoopCharacteristics) ParseTree (definitions *Definitions) {
+func (multiInstanceLoopCharacteristics *MultiInstanceLoopCharacteristics) ParseTree(definitions *Definitions) {
 	multiInstanceLoopCharacteristics.LoopCharacteristics.ParseTree(definitions)
 
 	for i := 0; i < len(multiInstanceLoopCharacteristics.LoopCardinality); i++ {
@@ -132,4 +131,3 @@ func (multiInstanceLoopCharacteristics *MultiInstanceLoopCharacteristics) GetImp
 
 	return nil
 }
-

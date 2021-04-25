@@ -41,11 +41,10 @@ type SubChoreography struct {
 	Association            []Association            `xml:"association"`
 	Group                  []Group                  `xml:"group"`
 	TextAnnotation         []TextAnnotation         `xml:"textAnnotation"`
-
 }
 
 // ParseTree of components of SubChoreography.
-func (subChoreography *SubChoreography) ParseTree (definitions *Definitions) {
+func (subChoreography *SubChoreography) ParseTree(definitions *Definitions) {
 	subChoreography.ChoreographyActivity.ParseTree(definitions)
 
 	for i := 0; i < len(subChoreography.AdHocSubProcess); i++ {
@@ -967,4 +966,3 @@ func (subChoreography *SubChoreography) GetTextAnnotation(ID string) *TextAnnota
 
 	return nil
 }
-

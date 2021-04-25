@@ -11,11 +11,10 @@ type CorrelationProperty struct {
 	CorrelationPropertyRetrievalExpression []CorrelationPropertyRetrievalExpression `xml:"correlationPropertyRetrievalExpression"`
 	Name                                   string                                   `xml:"name,attr"`
 	Type                                   string                                   `xml:"type,attr"`
-
 }
 
 // ParseTree of components of CorrelationProperty.
-func (correlationProperty *CorrelationProperty) ParseTree (definitions *Definitions) {
+func (correlationProperty *CorrelationProperty) ParseTree(definitions *Definitions) {
 	correlationProperty.RootElement.ParseTree(definitions)
 
 	for i := 0; i < len(correlationProperty.CorrelationPropertyRetrievalExpression); i++ {
@@ -49,4 +48,3 @@ func (correlationProperty *CorrelationProperty) GetFormalExpression(ID string) *
 
 	return nil
 }
-

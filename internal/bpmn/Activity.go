@@ -18,11 +18,10 @@ type Activity struct {
 	StartQuantity         int                      `xml:"startQuantity,attr"`
 	CompletionQuantity    int                      `xml:"completionQuantity,attr"`
 	Default               string                   `xml:"default,attr"`
-
 }
 
 // ParseTree of components of Activity.
-func (activity *Activity) ParseTree (definitions *Definitions) {
+func (activity *Activity) ParseTree(definitions *Definitions) {
 	activity.FlowNode.ParseTree(definitions)
 
 	activity.Init(definitions)
@@ -98,4 +97,3 @@ func (activity *Activity) GetPerformer(ID string) *Performer {
 
 	return nil
 }
-

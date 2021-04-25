@@ -8,12 +8,10 @@ import (
 type Performer struct {
 	ResourceRole
 	XMLName xml.Name
-
 }
 
 // ParseTree of components of Performer.
-func (performer *Performer) ParseTree (definitions *Definitions) {
+func (performer *Performer) ParseTree(definitions *Definitions) {
 	performer.ResourceRole.ParseTree(definitions)
 
 }
-

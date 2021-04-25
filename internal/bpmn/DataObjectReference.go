@@ -11,14 +11,12 @@ type DataObjectReference struct {
 	DataState      DataState `xml:"dataState"`
 	ItemSubjectRef string    `xml:"itemSubjectRef,attr"`
 	DataObjectRef  string    `xml:"dataObjectRef,attr"`
-
 }
 
 // ParseTree of components of DataObjectReference.
-func (dataObjectReference *DataObjectReference) ParseTree (definitions *Definitions) {
+func (dataObjectReference *DataObjectReference) ParseTree(definitions *Definitions) {
 	dataObjectReference.FlowElement.ParseTree(definitions)
 
 	dataObjectReference.DataState.ParseTree(definitions) // DataState.
 
 }
-

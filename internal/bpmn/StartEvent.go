@@ -9,15 +9,13 @@ type StartEvent struct {
 	StartEventTrait `bson:"-"`
 	CatchEvent
 	XMLName        xml.Name
-	IsInterrupting bool     `xml:"isInterrupting,attr"`
-
+	IsInterrupting bool `xml:"isInterrupting,attr"`
 }
 
 // ParseTree of components of StartEvent.
-func (startEvent *StartEvent) ParseTree (definitions *Definitions) {
+func (startEvent *StartEvent) ParseTree(definitions *Definitions) {
 	startEvent.CatchEvent.ParseTree(definitions)
 
 	startEvent.Init(definitions)
 
 }
-

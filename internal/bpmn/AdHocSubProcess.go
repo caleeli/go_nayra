@@ -11,11 +11,10 @@ type AdHocSubProcess struct {
 	CompletionCondition      []Expression `xml:"completionCondition"`
 	CancelRemainingInstances bool         `xml:"cancelRemainingInstances,attr"`
 	Ordering                 string       `xml:"ordering,attr"`
-
 }
 
 // ParseTree of components of AdHocSubProcess.
-func (adHocSubProcess *AdHocSubProcess) ParseTree (definitions *Definitions) {
+func (adHocSubProcess *AdHocSubProcess) ParseTree(definitions *Definitions) {
 	adHocSubProcess.SubProcess.ParseTree(definitions)
 
 	for i := 0; i < len(adHocSubProcess.CompletionCondition); i++ {
@@ -36,4 +35,3 @@ func (adHocSubProcess *AdHocSubProcess) GetExpression(ID string) *Expression {
 
 	return nil
 }
-

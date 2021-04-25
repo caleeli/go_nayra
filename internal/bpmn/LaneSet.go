@@ -8,13 +8,12 @@ import (
 type LaneSet struct {
 	BaseElement
 	XMLName xml.Name
-	Lane    []Lane   `xml:"lane"`
-	Name    string   `xml:"name,attr"`
-
+	Lane    []Lane `xml:"lane"`
+	Name    string `xml:"name,attr"`
 }
 
 // ParseTree of components of LaneSet.
-func (laneSet *LaneSet) ParseTree (definitions *Definitions) {
+func (laneSet *LaneSet) ParseTree(definitions *Definitions) {
 	laneSet.BaseElement.ParseTree(definitions)
 
 	for i := 0; i < len(laneSet.Lane); i++ {
@@ -74,4 +73,3 @@ func (laneSet *LaneSet) GetLaneSet(ID string) *LaneSet {
 
 	return nil
 }
-
