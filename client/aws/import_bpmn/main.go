@@ -7,21 +7,30 @@ import (
 	"nayra/internal/storage"
 
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go/aws"
 )
 
 type ImportBpmnEvent struct {
 	Bpmn []byte `json:"bpmn"`
 }
 
+type Response struct {
+	Success   bool    `json:"success"`
+	RequestId *string `json:"requestId"`
+}
+
 func main() {
 	lambda.Start(Handler)
 }
 
-func Handler(event ImportBpmnEvent) (string, error) {
+func Handler(event ImportBpmnEvent) (Response, error) {
 	// start
-	db, err := services.LoadStorage()
+	db, err := services.DynamoDB()
 	if err != nil {
-		panic(err)
+		return Response{
+			Success:   false,
+			RequestId: nil,
+		}, err
 	}
 	nayra.SetupStorageService(db)
 
@@ -29,13 +38,22 @@ func Handler(event ImportBpmnEvent) (string, error) {
 	content := event.Bpmn
 	definitions, err := repository.ParseBpmn(content)
 	if err != nil {
-		return "FAILURE", err
+		return Response{
+			Success:   false,
+			RequestId: nil,
+		}, err
 	}
 	storage.InsertDefinitions(definitions)
 	id := definitions.UUID.String()
 	loaded, err := storage.LoadDefinitions(id)
 	if err != nil {
-		return "FAILURE", err
+		return Response{
+			Success:   false,
+			RequestId: nil,
+		}, err
 	}
-	return loaded.ID, nil
+	return Response{
+		Success:   true,
+		RequestId: aws.String(loaded.UUID.String()),
+	}, nil
 }

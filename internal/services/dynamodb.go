@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"nayra/internal/bpmn"
+	"nayra/internal/errors"
 	"nayra/internal/repository"
 	"nayra/internal/storage"
 	"os"
@@ -24,7 +24,6 @@ type tDynamoDB struct {
 func DynamoDB() (storage.StorageService, error) {
 	service := &tDynamoDB{}
 	endpoint := os.Getenv("AWS_ENDPOINT_URL")
-	fmt.Println("AWS_ENDPOINT_URL", endpoint)
 
 	ctx := context.TODO()
 	cfg, err := config.LoadDefaultConfig(ctx)
@@ -32,7 +31,7 @@ func DynamoDB() (storage.StorageService, error) {
 		cfg, err = config.LoadDefaultConfig(ctx, config.WithEndpointResolver(service))
 	}
 	if err != nil {
-		return nil, err
+		return nil, errors.WrapServiceError(err, "Unable to init Dynamo config")
 	}
 	svc := dynamodb.NewFromConfig(cfg)
 	service.svc = svc
