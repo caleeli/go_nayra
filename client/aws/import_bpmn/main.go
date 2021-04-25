@@ -3,13 +3,13 @@ package main
 import (
 	"nayra/internal/nayra"
 	"nayra/internal/repository"
+	"nayra/internal/services"
 	"nayra/internal/storage"
-	"os"
 
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-type InputEvent struct {
+type ImportBpmnEvent struct {
 	Bpmn []byte `json:"bpmn"`
 }
 
@@ -17,18 +17,15 @@ func main() {
 	lambda.Start(Handler)
 }
 
-func Handler(event InputEvent) (string, error) {
-	db, err := storage.NewMongoDB(
-		os.Getenv("DB_USER"),
-		os.Getenv("DB__PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME"),
-	)
+func Handler(event ImportBpmnEvent) (string, error) {
+	// start
+	db, err := services.LoadStorage()
 	if err != nil {
 		panic(err)
 	}
 	nayra.SetupStorageService(db)
+
+	// run
 	content := event.Bpmn
 	definitions, err := repository.ParseBpmn(content)
 	if err != nil {

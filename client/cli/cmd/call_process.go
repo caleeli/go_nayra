@@ -10,7 +10,7 @@ import (
 // callProcessCmd initialize CallProcess command
 func callProcessCmd() *cobra.Command {
 	command := &cobra.Command{
-		Use:   "call [DEFINITION_ID]",
+		Use:   "call [DEFINITIONS_ID]",
 		Short: "Call a process",
 		Run:   callProcess(),
 		Args:  cobra.MinimumNArgs(1),
