@@ -96,18 +96,18 @@ func (db *mongoDB) getProcessses() *mongo.Collection {
 func (db *mongoDB) LoadRequest(requestId uuid.UUID) (request repository.Request, err error) {
 	requests := db.getRequests()
 	filter := bson.D{{Key: "id", Value: requestId.String()}}
-	srequest := &sRequest{}
+	srequest := &SRequest{}
 	err = requests.FindOne(db.ctx, filter).Decode(srequest)
 	if err != nil {
 		return nil, err
 	}
-	request, err = unmarshalRequest(srequest)
+	request, err = UnmarshalRequest(srequest)
 	return request, err
 }
 
 func (db *mongoDB) InsertRequest(request repository.Request) (err error) {
 	requests := db.getRequests()
-	_, err = requests.InsertOne(db.ctx, marshalRequest(request))
+	_, err = requests.InsertOne(db.ctx, MarshalRequest(request))
 	return
 }
 
@@ -116,7 +116,7 @@ func (db *mongoDB) UpdateRequest(request repository.Request) (err error) {
 		db.requests = db.database.Collection("requests")
 	}
 	filter := bson.D{{Key: "id", Value: request.GetId().String()}}
-	bm := marshalRequest(request)
+	bm := MarshalRequest(request)
 	update := bson.D{{Key: "$set", Value: bm}}
 
 	_, err = db.requests.UpdateOne(
@@ -129,7 +129,7 @@ func (db *mongoDB) UpdateRequest(request repository.Request) (err error) {
 
 func (db *mongoDB) InsertDefinitions(definitions *bpmn.Definitions) (err error) {
 	processes := db.getProcessses()
-	record := db.MarshalProcess(definitions)
+	record := MarshalDefinitions(definitions)
 	_, err = processes.InsertOne(db.ctx, record)
 	return
 }
@@ -137,12 +137,12 @@ func (db *mongoDB) InsertDefinitions(definitions *bpmn.Definitions) (err error) 
 func (db *mongoDB) LoadDefinitions(id string) (*bpmn.Definitions, error) {
 	requests := db.getProcessses()
 	filter := bson.D{{Key: "id", Value: id}}
-	sdefinitions := &sDefinitions{}
+	sdefinitions := &SDefinitions{}
 	err := requests.FindOne(db.ctx, filter).Decode(sdefinitions)
 	if err != nil {
 		return nil, err
 	}
-	definitions, err := db.UnmarshalProcess(sdefinitions)
+	definitions, err := UnmarshalDefinitions(sdefinitions)
 	if err != nil {
 		return nil, err
 	}

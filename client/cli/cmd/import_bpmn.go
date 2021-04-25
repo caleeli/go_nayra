@@ -22,7 +22,7 @@ func importBpmnCmd() *cobra.Command {
 	return command
 }
 
-// callProcess start a process by definitions and processId
+// importBpmn imports a BPMN file into the storage
 func importBpmn() CobraFn {
 	return func(cmd *cobra.Command, args []string) {
 		path := args[0]
@@ -37,20 +37,19 @@ func importBpmn() CobraFn {
 			log.Fatal(err)
 			return
 		}
-		//$bpmn = repository.ParseBpmn($content)
-		//$record = storage.MarshalProcess($bpmn)
-		//storage.insert($record)
 		definitions, err := repository.ParseBpmn(content)
 		if err != nil {
 			log.Fatal(err)
 			return
 		}
-		storage.InsertDefinitions(definitions)
+		err = storage.InsertDefinitions(definitions)
+		if err != nil {
+			panic(err)
+		}
 		id := definitions.UUID.String()
 		loaded, err := storage.LoadDefinitions(id)
 		if err != nil {
-			log.Fatal(err)
-			return
+			panic(err)
 		}
 		fmt.Println(loaded.UUID)
 	}

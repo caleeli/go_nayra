@@ -7,15 +7,15 @@ import (
 	"github.com/google/uuid"
 )
 
-type sRequest struct {
-	ID            string      `json:"id" bson:"id"`
-	DefinitionsId string      `json:"definitionsId" bson:"definitionsId"`
-	Instances     []sInstance `json:"instances" bson:"instances"`
+type SRequest struct {
+	Id            string
+	DefinitionsId string
+	Instances     []sInstance
 }
 
 type sInstance struct {
-	ID     string   `json:"id" bson:"id"`
-	Tokens []sToken `json:"tokens"`
+	Id     string
+	Tokens []sToken
 }
 
 type sToken struct {
@@ -26,10 +26,10 @@ type sToken struct {
 	Active     bool
 }
 
-func marshalRequest(request repository.Request) sRequest {
+func MarshalRequest(request repository.Request) SRequest {
 	req := request.(*repository.TRequest)
-	output := sRequest{
-		ID:            req.ID.String(),
+	output := SRequest{
+		Id:            req.ID.String(),
 		DefinitionsId: req.Definitions.UUID.String(),
 		Instances:     make([]sInstance, len(req.Instances)),
 	}
@@ -41,7 +41,7 @@ func marshalRequest(request repository.Request) sRequest {
 
 func marshalInstance(instance *bpmn.Instance) sInstance {
 	output := sInstance{
-		ID:     instance.ID.String(),
+		Id:     instance.ID.String(),
 		Tokens: make([]sToken, len(instance.Tokens)),
 	}
 	for i := range instance.Tokens {
@@ -60,8 +60,8 @@ func marshalToken(token *bpmn.Token) sToken {
 	}
 }
 
-func unmarshalRequest(request *sRequest) (repository.Request, error) {
-	ID, _ := uuid.Parse(request.ID)
+func UnmarshalRequest(request *SRequest) (repository.Request, error) {
+	ID, _ := uuid.Parse(request.Id)
 	definitions, err := LoadDefinitions(request.DefinitionsId)
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func unmarshalRequest(request *sRequest) (repository.Request, error) {
 }
 
 func unmarshalInstance(definitions *bpmn.Definitions, instance *sInstance) (*bpmn.Instance, error) {
-	ID, err := uuid.Parse(instance.ID)
+	ID, err := uuid.Parse(instance.Id)
 	if err != nil {
 		return nil, err
 	}

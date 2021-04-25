@@ -2,18 +2,11 @@ package main
 
 import (
 	"nayra/client/cli/cmd"
-	"nayra/internal/storage"
-	"os"
+	"nayra/internal/services"
 )
 
 func main() {
-	db, err := storage.NewMongoDB(
-		os.Getenv("DB_USER"),
-		os.Getenv("DB__PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME"),
-	)
+	db, err := services.LoadStorage()
 	if err != nil {
 		panic(err)
 	}

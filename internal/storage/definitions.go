@@ -4,21 +4,21 @@ import (
 	"nayra/internal/bpmn"
 )
 
-type sDefinitions struct {
-	ID          string            `json:"id"`
-	Definitions *bpmn.Definitions `json:"definitions"`
+type SDefinitions struct {
+	Id          string
+	Definitions *bpmn.Definitions
 }
 
-func (db *mongoDB) MarshalProcess(definitions *bpmn.Definitions) *sDefinitions {
+func MarshalDefinitions(definitions *bpmn.Definitions) *SDefinitions {
 	ID := definitions.UUID.String()
 
-	return &sDefinitions{
-		ID:          ID,
+	return &SDefinitions{
+		Id:          ID,
 		Definitions: definitions,
 	}
 }
 
-func (db *mongoDB) UnmarshalProcess(def *sDefinitions) (*bpmn.Definitions, error) {
+func UnmarshalDefinitions(def *SDefinitions) (*bpmn.Definitions, error) {
 	return def.Definitions, nil
 }
 
