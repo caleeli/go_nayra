@@ -6,6 +6,7 @@ import (
 
 // EndEvent from BPMN
 type EndEvent struct {
+	EndEventTrait `bson:"-"`
 	ThrowEvent
 	XMLName xml.Name
 
@@ -14,6 +15,8 @@ type EndEvent struct {
 // ParseTree of components of EndEvent.
 func (endEvent *EndEvent) ParseTree (definitions *Definitions) {
 	endEvent.ThrowEvent.ParseTree(definitions)
+
+	endEvent.Init(definitions)
 
 }
 

@@ -13,14 +13,20 @@
     <sequenceFlow id="_4" sourceRef="_2" targetRef="_3"/>
     <task completionQuantity="1" id="_3" isForCompensation="false" name="Task 1" startQuantity="1">
       <incoming>_4</incoming>
+      <outgoing>_6</outgoing>
     </task>
+    <endEvent id="_5" name="End Event">
+      <incoming>_6</incoming>
+      <inputSet/>
+    </endEvent>
+    <sequenceFlow id="_6" sourceRef="_3" targetRef="_5"/>
   </process>
   <bpmndi:BPMNDiagram id="Yaoqiang_Diagram-PROCESS_1" name="Untitled Diagram" resolution="96.0">
     <bpmndi:BPMNPlane bpmnElement="PROCESS_1">
       <bpmndi:BPMNShape bpmnElement="_2" id="Yaoqiang-_2">
         <dc:Bounds height="32.0" width="32.0" x="226.0" y="133.5"/>
         <bpmndi:BPMNLabel>
-          <dc:Bounds height="18.8" width="69.0" x="207.5" y="174.26"/>
+          <dc:Bounds height="18.8" width="69.0" x="207.5" y="174.34"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_3" id="Yaoqiang-_3">
@@ -29,6 +35,19 @@
           <dc:Bounds height="18.8" width="44.0" x="382.5" y="141.6"/>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" id="Yaoqiang-_5">
+        <dc:Bounds height="32.0" width="32.0" x="527.3333333333334" y="132.66666666666666"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="18.8" width="62.0" x="512.33" y="173.26"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="Yaoqiang-_6">
+        <di:waypoint x="447.0" y="149.0"/>
+        <di:waypoint x="527.0034725990643" y="148.66666666666666"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="18.8" width="6.0" x="484.17" y="139.6"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_4" id="Yaoqiang-_4">
         <di:waypoint x="257.9921855917195" y="149.5"/>
         <di:waypoint x="362.0" y="149.0"/>
