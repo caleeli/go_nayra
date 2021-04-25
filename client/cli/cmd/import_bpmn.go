@@ -14,7 +14,7 @@ import (
 // callProcessCmd initialize CallProcess command
 func importBpmnCmd() *cobra.Command {
 	command := &cobra.Command{
-		Use:   "import",
+		Use:   "import [file]",
 		Short: "Import a BPMN file",
 		Run:   importBpmn(),
 		Args:  cobra.MinimumNArgs(1),
