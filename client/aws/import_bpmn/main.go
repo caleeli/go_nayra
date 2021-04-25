@@ -28,8 +28,7 @@ func Handler(event ImportBpmnEvent) (Response, error) {
 	db, err := services.DynamoDB()
 	if err != nil {
 		return Response{
-			Success:   false,
-			RequestId: nil,
+			Success: false,
 		}, err
 	}
 	nayra.SetupStorageService(db)
@@ -39,8 +38,7 @@ func Handler(event ImportBpmnEvent) (Response, error) {
 	definitions, err := repository.ParseBpmn(content)
 	if err != nil {
 		return Response{
-			Success:   false,
-			RequestId: nil,
+			Success: false,
 		}, err
 	}
 	storage.InsertDefinitions(definitions)
@@ -48,8 +46,7 @@ func Handler(event ImportBpmnEvent) (Response, error) {
 	loaded, err := storage.LoadDefinitions(id)
 	if err != nil {
 		return Response{
-			Success:   false,
-			RequestId: nil,
+			Success: false,
 		}, err
 	}
 	return Response{

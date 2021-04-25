@@ -84,18 +84,37 @@ func (instance *Instance) log(line string, args ...interface{}) {
 
 // Log an action during execution
 func (instance *Instance) TraceLog() {
+	// log transitions
 	for _, line := range instance.logs {
 		fmt.Println(line)
 	}
-}
-
-// Log an action during execution
-func (instance *Instance) TokensLog() {
+	fmt.Println("------------------------------------------------------")
+	// log tokens
 	for _, token := range instance.Tokens {
 		active := "[.]"
 		if token.Active {
 			active = "[*]"
 		}
-		fmt.Println(active, token.ID, token.Owner.Owner.GetName(), "(", token.Owner.Name, token.Owner.Index, ")")
+		fmt.Printf("%s %s %s (%s)\n", active, token.ID, token.Owner.Owner.GetName(), token.Owner.Name)
 	}
+}
+
+// Log an action during execution
+func (instance *Instance) Trace() (trace []string) {
+	trace = make([]string, len(instance.logs)+1+len(instance.Tokens))
+	i := 0
+	for range instance.logs {
+		trace[i] = instance.logs[i]
+		i++
+	}
+	trace[i] = "------------------------------------------------------"
+	for _, token := range instance.Tokens {
+		active := "[.]"
+		if token.Active {
+			active = "[*]"
+		}
+		trace[i] = fmt.Sprintf("%s %s %s (%s)", active, token.ID, token.Owner.Owner.GetName(), token.Owner.Name)
+		i++
+	}
+	return
 }

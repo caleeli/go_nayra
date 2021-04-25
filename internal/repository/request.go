@@ -23,6 +23,7 @@ type Request interface {
 	GetToken(uuid uuid.UUID) (*bpmn.Token, error)
 	GetDefinitions() *bpmn.Definitions
 	TraceLog()
+	Trace() []string
 }
 
 func (request *TRequest) GetId() uuid.UUID {
@@ -80,7 +81,15 @@ func (request *TRequest) TraceLog() {
 		fmt.Println("Instance:", instance.ID)
 		fmt.Println("------------------------------------------------------")
 		instance.TraceLog()
-		fmt.Println("------------------------------------------------------")
-		instance.TokensLog()
 	}
+}
+
+func (request *TRequest) Trace() (trace []string) {
+	trace = make([]string, 0)
+	for _, instance := range request.Instances {
+		trace = append(trace, "Instance: "+instance.ID.String())
+		trace = append(trace, "------------------------------------------------------")
+		trace = append(trace, instance.Trace()...)
+	}
+	return
 }
