@@ -2,10 +2,10 @@ package bpmn
 
 // ActivityTrait from BPMN
 type ActivityTrait struct {
-	Ready       ActivityReadyState
+	Ready       State
 	LoadingData LoadingDataTransition
-	Active      State
-	Completed   State
+	Active      ActivityActiveState
+	Completed   ActivityCompletedState
 	Terminating TerminatingTransition
 	Failing     FailingTransition
 	Failed      State
