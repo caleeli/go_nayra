@@ -16,6 +16,7 @@ type StateInterface interface {
 	GetTokens() []*Token
 	Select(instance *Instance, selectAll bool) []*Token
 	OnTokenArrived(token *Token, inputTokens []*Token)
+	OnTokenLeaves(token *Token)
 }
 
 // Init transition
@@ -85,3 +86,6 @@ func (state *State) OnTokenArrived(token *Token, inputTokens []*Token) {
 		token.copyThreadDataFrom(inputTokens[i])
 	}
 }
+
+// OnTokenLeaves is activated when a token leaves the state
+func (state *State) OnTokenLeaves(token *Token) {}

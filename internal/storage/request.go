@@ -22,6 +22,7 @@ type sToken struct {
 	ID         string
 	Status     string
 	StateIndex int
+	ThreadData map[string]interface{}
 	Transition string
 	Active     bool
 }
@@ -55,6 +56,7 @@ func marshalToken(token *bpmn.Token) sToken {
 		ID:         token.ID.String(),
 		Status:     token.Owner.Name,
 		StateIndex: token.Owner.Index,
+		ThreadData: token.ThreadData,
 		Transition: token.Transition,
 		Active:     token.Active,
 	}
@@ -108,6 +110,7 @@ func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, toke
 		ID:         ID,
 		Instance:   instance,
 		Owner:      owner,
+		ThreadData: token.ThreadData,
 		Transition: token.Transition,
 		Active:     token.Active,
 	}

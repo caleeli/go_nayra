@@ -45,8 +45,8 @@ func (transition Transition) Execute(instance *Instance) bool {
 	if !transition.Condition(instance, inputTokens) {
 		return false
 	}
-	transition.RemoveInputTokens(instance, inputTokens)
 	transition.CreateOutputTokens(instance, inputTokens)
+	transition.RemoveInputTokens(instance, inputTokens)
 	return true
 }
 
@@ -67,6 +67,7 @@ func (transition *Transition) SelectInputTokens(instance *Instance) []*Token {
 func (transition *Transition) RemoveInputTokens(instance *Instance, inputTokens []*Token) {
 	for _, token := range inputTokens {
 		token.Owner.RemoveToken(token)
+		token.Owner.OnTokenLeaves(token)
 	}
 }
 
