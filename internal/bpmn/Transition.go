@@ -3,25 +3,25 @@ package bpmn
 // Transition from Nayra
 type Transition struct {
 	Node
-	Incoming        []*State
-	Outgoing        []*State
+	Incoming        []StateInterface
+	Outgoing        []StateInterface
 	RemoveAllTokens bool
 }
 
 type TransitionInterface interface {
 	NodeInterface
 	Init(definitions *Definitions, owner NamedElementInterface, name string)
-	Connect(target *State)
+	Connect(target StateInterface)
 	Execute(instance *Instance) bool
 	SelectInputTokens(instance *Instance) []*Token
 	RemoveInputTokens(instance *Instance, inputTokens []*Token)
 	CreateOutputTokens(instance *Instance, inputTokens []*Token) []*Token
 	Condition(instance *Instance, inputTokens []*Token) bool
-	AppendIncoming(state *State)
+	AppendIncoming(state StateInterface)
 	GetName() string
 	GetOwner() NamedElementInterface
-	GetIncoming() []*State
-	GetOutgoing() []*State
+	GetIncoming() []StateInterface
+	GetOutgoing() []StateInterface
 }
 
 // Init transition
@@ -31,9 +31,9 @@ func (transition *Transition) Init(definitions *Definitions, owner NamedElementI
 }
 
 // Connect transition to state
-func (transition *Transition) Connect(target *State) {
+func (transition *Transition) Connect(target StateInterface) {
 	transition.Outgoing = append(transition.Outgoing, target)
-	target.Incoming = append(target.Incoming, transition)
+	target.AddIncoming(transition)
 }
 
 // Execute transition
@@ -74,7 +74,9 @@ func (transition *Transition) RemoveInputTokens(instance *Instance, inputTokens 
 func (transition *Transition) CreateOutputTokens(instance *Instance, inputTokens []*Token) []*Token {
 	outputTokens := []*Token{}
 	for _, Outgoing := range transition.Outgoing {
-		outputTokens = append(outputTokens, Outgoing.CreateToken(instance))
+		token := Outgoing.CreateToken(instance)
+		Outgoing.OnTokenArrived(token, inputTokens)
+		outputTokens = append(outputTokens, token)
 	}
 	return outputTokens
 }
@@ -85,7 +87,7 @@ func (transition *Transition) Condition(instance *Instance, inputTokens []*Token
 }
 
 // Condition to activate the transition
-func (transition *Transition) AppendIncoming(state *State) {
+func (transition *Transition) AppendIncoming(state StateInterface) {
 	transition.Incoming = append(transition.Incoming, state)
 }
 
@@ -97,10 +99,10 @@ func (transition *Transition) GetOwner() NamedElementInterface {
 	return transition.Owner
 }
 
-func (transition *Transition) GetIncoming() []*State {
+func (transition *Transition) GetIncoming() []StateInterface {
 	return transition.Incoming
 }
 
-func (transition *Transition) GetOutgoing() []*State {
+func (transition *Transition) GetOutgoing() []StateInterface {
 	return transition.Outgoing
 }

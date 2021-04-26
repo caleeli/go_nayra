@@ -26,7 +26,13 @@ func (instance *Instance) Init(definitions *Definitions) {
 }
 
 func (instance *Instance) CreateToken(state *State) *Token {
-	token := Token{ID: uuid.New(), Instance: instance, Owner: state, Active: true}
+	token := Token{
+		ID:         uuid.New(),
+		Instance:   instance,
+		Owner:      state,
+		Active:     true,
+		ThreadData: make(map[string]interface{}),
+	}
 	instance.Tokens = append(instance.Tokens, &token)
 	return &token
 }
@@ -59,7 +65,7 @@ func (instance *Instance) NextTick(definitions *Definitions) {
 					outgoing := transition.GetOutgoing()
 					target := make(map[string]int, len(outgoing))
 					for _, state := range outgoing {
-						target[state.Name] = len(state.Tokens)
+						target[state.GetName()] = len(state.GetTokens())
 					}
 					instance.log(
 						"(%s) %s: %s [%v]",

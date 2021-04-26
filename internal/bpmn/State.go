@@ -10,6 +10,12 @@ type State struct {
 }
 
 type StateInterface interface {
+	AddIncoming(transition *Transition)
+	CreateToken(instance *Instance) *Token
+	GetName() string
+	GetTokens() []*Token
+	Select(instance *Instance, selectAll bool) []*Token
+	OnTokenArrived(token *Token, inputTokens []*Token)
 }
 
 // Init transition
@@ -56,4 +62,26 @@ func (state *State) RemoveToken(token *Token) bool {
 		}
 	}
 	return false
+}
+
+// AddIncoming transition to state
+func (state *State) AddIncoming(transition *Transition) {
+	state.Incoming = append(state.Incoming, transition)
+}
+
+// GateName of the state
+func (state *State) GetName() string {
+	return state.Name
+}
+
+// GetTokens in the state
+func (state *State) GetTokens() []*Token {
+	return state.Tokens
+}
+
+// OnTokenArrived is triggered when a token arrives to the state
+func (state *State) OnTokenArrived(token *Token, inputTokens []*Token) {
+	for i := range inputTokens {
+		token.copyThreadDataFrom(inputTokens[i])
+	}
 }
