@@ -17,5 +17,6 @@ func Nayra(store storage.StorageService) *cobra.Command {
 	rootCmd.AddCommand(callProcessCmd())
 	rootCmd.AddCommand(transitTokenCmd())
 	rootCmd.AddCommand(importBpmnCmd())
+	rootCmd.AddCommand(showRequestCmd())
 	return rootCmd
 }

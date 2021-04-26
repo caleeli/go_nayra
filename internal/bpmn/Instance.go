@@ -2,6 +2,7 @@ package bpmn
 
 import (
 	"fmt"
+	"log"
 	"reflect"
 
 	"github.com/google/uuid"
@@ -86,16 +87,16 @@ func (instance *Instance) log(line string, args ...interface{}) {
 func (instance *Instance) TraceLog() {
 	// log transitions
 	for _, line := range instance.logs {
-		fmt.Println(line)
+		log.Println(line)
 	}
-	fmt.Println("------------------------------------------------------")
+	log.Println("------------------------------------------------------")
 	// log tokens
 	for _, token := range instance.Tokens {
 		active := "[.]"
 		if token.Active {
 			active = "[*]"
 		}
-		fmt.Printf("%s %s %s (%s)\n", active, token.ID, token.Owner.Owner.GetName(), token.Owner.Name)
+		log.Printf("%s %s %s (%s)\n", active, token.ID, token.Owner.Owner.GetName(), token.Owner.Name)
 	}
 }
 

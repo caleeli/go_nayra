@@ -1,11 +1,9 @@
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"nayra/internal/nayra"
-	"nayra/internal/storage"
 
 	"github.com/spf13/cobra"
 )
@@ -32,7 +30,6 @@ func callProcess() CobraFn {
 			log.Fatal(err)
 		}
 		request.TraceLog()
-		res, _ := json.Marshal(storage.MarshalRequest(request))
-		fmt.Println(string(res))
+		fmt.Println(request.GetId().String())
 	}
 }

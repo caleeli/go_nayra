@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"fmt"
+	"log"
 	"nayra/internal/bpmn"
 	"nayra/internal/errors"
 
@@ -75,11 +75,11 @@ func (request *TRequest) GetInstanceIds() (uuids []uuid.UUID) {
 }
 
 func (request *TRequest) TraceLog() {
-	fmt.Println("Request:", request.ID)
-	fmt.Println("======================================================")
+	log.Println("Request:", request.ID)
+	log.Println("======================================================")
 	for _, instance := range request.Instances {
-		fmt.Println("Instance:", instance.ID)
-		fmt.Println("------------------------------------------------------")
+		log.Println("Instance:", instance.ID)
+		log.Println("------------------------------------------------------")
 		instance.TraceLog()
 	}
 }
