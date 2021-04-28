@@ -25,7 +25,7 @@ func (instance *Instance) Init(definitions *Definitions) {
 	instance.Tokens = []*Token{}
 }
 
-func (instance *Instance) CreateToken(state *State) *Token {
+func (instance *Instance) CreateToken(state StateInterface) *Token {
 	token := Token{
 		ID:         uuid.New(),
 		Instance:   instance,
@@ -102,7 +102,7 @@ func (instance *Instance) TraceLog() {
 		if token.Active {
 			active = "[*]"
 		}
-		log.Printf("%s %s %s (%s)\n", active, token.ID, token.Owner.Owner.GetName(), token.Owner.Name)
+		log.Printf("%s %s %s (%s)\n", active, token.ID, token.Owner.GetOwner().GetName(), token.Owner.GetName())
 	}
 }
 
@@ -121,7 +121,7 @@ func (instance *Instance) Trace() (trace []string) {
 		if token.Active {
 			active = "[*]"
 		}
-		trace[i] = fmt.Sprintf("%s %s %s (%s)", active, token.ID, token.Owner.Owner.GetName(), token.Owner.Name)
+		trace[i] = fmt.Sprintf("%s %s %s (%s)", active, token.ID, token.Owner.GetOwner().GetName(), token.Owner.GetName())
 		i++
 	}
 	return

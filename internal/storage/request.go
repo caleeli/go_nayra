@@ -54,8 +54,8 @@ func marshalInstance(instance *bpmn.Instance) sInstance {
 func marshalToken(token *bpmn.Token) sToken {
 	return sToken{
 		ID:         token.ID.String(),
-		Status:     token.Owner.Name,
-		StateIndex: token.Owner.Index,
+		Status:     token.Owner.GetName(),
+		StateIndex: token.Owner.GetIndex(),
 		ThreadData: token.ThreadData,
 		Transition: token.Transition,
 		Active:     token.Active,
@@ -115,7 +115,7 @@ func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, toke
 		Active:     token.Active,
 	}
 	if output.Active {
-		owner.Tokens = append(owner.Tokens, output)
+		owner.AppendToken(output)
 	}
 	return output, nil
 }

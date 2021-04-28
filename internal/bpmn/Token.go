@@ -10,7 +10,7 @@ import (
 type Token struct {
 	ID         uuid.UUID
 	Instance   *Instance
-	Owner      *State
+	Owner      StateInterface
 	ThreadData map[string]interface{}
 	Transition string
 	Active     bool

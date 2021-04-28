@@ -10,47 +10,38 @@ type State struct {
 }
 
 type StateInterface interface {
-	AddIncoming(transition *Transition)
-	CreateToken(instance *Instance) *Token
+	NodeInterface
+	AppendToken(token *Token)
+	SetIndex(index int)
+	GetIndex() int
 	GetName() string
+	GetOwner() NamedElementInterface
 	GetTokens() []*Token
-	Select(instance *Instance, selectAll bool) []*Token
 	OnTokenArrived(token *Token, inputTokens []*Token)
 	OnTokenLeaves(token *Token)
+	RemoveToken(token *Token) bool
+	Select(instance *Instance, selectAll bool) []*Token
 }
 
 // Init transition
 func (state *State) Init(definitions *Definitions, owner NamedElementInterface, name string) {
 	state.Node.Init(definitions, owner, name)
-	state.Index = len(definitions.States)
-	definitions.States = append(definitions.States, state)
-}
-
-// Connect transition to state
-func (state *State) Connect(target TransitionInterface) {
-	state.Outgoing = append(state.Outgoing, target)
-	target.AppendIncoming(state)
+	//state.Index = len(definitions.States)
+	//definitions.States = append(definitions.States, state)
 }
 
 // Select tokens from state
 func (state *State) Select(instance *Instance, selectAll bool) []*Token {
 	selected := []*Token{}
-	for _, token := range state.Tokens {
-		if token.Instance == instance {
-			selected = append(selected, token)
+	for i := range state.Tokens {
+		if state.Tokens[i].Instance == instance {
+			selected = append(selected, state.Tokens[i])
 			if !selectAll {
 				return selected
 			}
 		}
 	}
 	return selected
-}
-
-// CreateToken into the State
-func (state *State) CreateToken(instance *Instance) *Token {
-	token := instance.CreateToken(state)
-	state.Tokens = append(state.Tokens, token)
-	return token
 }
 
 // RemoveToken from state
@@ -65,19 +56,44 @@ func (state *State) RemoveToken(token *Token) bool {
 	return false
 }
 
-// AddIncoming transition to state
-func (state *State) AddIncoming(transition *Transition) {
-	state.Incoming = append(state.Incoming, transition)
+// AppendIncoming transition to state
+func (state *State) AppendIncoming(transition NodeInterface) {
+	state.Incoming = append(state.Incoming, transition.(TransitionInterface))
 }
 
-// GateName of the state
+// AppendIncoming transition to state
+func (state *State) AppendOutgoing(transition NodeInterface) {
+	state.Outgoing = append(state.Outgoing, transition.(TransitionInterface))
+}
+
+// GetName of the state
 func (state *State) GetName() string {
 	return state.Name
+}
+
+// GetIndex of the state
+func (state *State) GetIndex() int {
+	return state.Index
+}
+
+// GetIndex of the state
+func (state *State) SetIndex(index int) {
+	state.Index = index
 }
 
 // GetTokens in the state
 func (state *State) GetTokens() []*Token {
 	return state.Tokens
+}
+
+// GetTokens in the state
+func (state *State) AppendToken(token *Token) {
+	state.Tokens = append(state.Tokens, token)
+}
+
+// GetOwner of the state
+func (state *State) GetOwner() NamedElementInterface {
+	return state.Owner
 }
 
 // OnTokenArrived is triggered when a token arrives to the state

@@ -10,30 +10,29 @@ type Transition struct {
 
 type TransitionInterface interface {
 	NodeInterface
-	Init(definitions *Definitions, owner NamedElementInterface, name string)
-	Connect(target StateInterface)
-	Execute(instance *Instance) bool
-	SelectInputTokens(instance *Instance) []*Token
-	RemoveInputTokens(instance *Instance, inputTokens []*Token)
-	CreateOutputTokens(instance *Instance, inputTokens []*Token) []*Token
 	Condition(instance *Instance, inputTokens []*Token) bool
-	AppendIncoming(state StateInterface)
-	GetName() string
-	GetOwner() NamedElementInterface
+	Connect(target StateInterface)
+	CreateOutputTokens(instance *Instance, inputTokens []*Token) []*Token
+	Execute(instance *Instance) bool
 	GetIncoming() []StateInterface
+	GetName() string
 	GetOutgoing() []StateInterface
+	GetOwner() NamedElementInterface
+	Init(definitions *Definitions, owner NamedElementInterface, name string)
+	RemoveInputTokens(instance *Instance, inputTokens []*Token)
+	SelectInputTokens(instance *Instance) []*Token
 }
 
 // Init transition
 func (transition *Transition) Init(definitions *Definitions, owner NamedElementInterface, name string) {
 	transition.Node.Init(definitions, owner, name)
-	definitions.Transitions = append(definitions.Transitions, transition)
+	//definitions.Transitions = append(definitions.Transitions, transition)
 }
 
 // Connect transition to state
 func (transition *Transition) Connect(target StateInterface) {
 	transition.Outgoing = append(transition.Outgoing, target)
-	target.AddIncoming(transition)
+	target.AppendIncoming(transition)
 }
 
 // Execute transition
@@ -65,9 +64,9 @@ func (transition *Transition) SelectInputTokens(instance *Instance) []*Token {
 
 // RemoveInputTokens it consumes the required input tokens
 func (transition *Transition) RemoveInputTokens(instance *Instance, inputTokens []*Token) {
-	for _, token := range inputTokens {
-		token.Owner.RemoveToken(token)
-		token.Owner.OnTokenLeaves(token)
+	for i := range inputTokens {
+		inputTokens[i].Owner.OnTokenLeaves(inputTokens[i])
+		inputTokens[i].Owner.RemoveToken(inputTokens[i])
 	}
 }
 
@@ -75,7 +74,7 @@ func (transition *Transition) RemoveInputTokens(instance *Instance, inputTokens 
 func (transition *Transition) CreateOutputTokens(instance *Instance, inputTokens []*Token) []*Token {
 	outputTokens := []*Token{}
 	for _, Outgoing := range transition.Outgoing {
-		token := Outgoing.CreateToken(instance)
+		token := CreateToken(instance, Outgoing)
 		Outgoing.OnTokenArrived(token, inputTokens)
 		outputTokens = append(outputTokens, token)
 	}
@@ -88,8 +87,13 @@ func (transition *Transition) Condition(instance *Instance, inputTokens []*Token
 }
 
 // Condition to activate the transition
-func (transition *Transition) AppendIncoming(state StateInterface) {
-	transition.Incoming = append(transition.Incoming, state)
+func (transition *Transition) AppendIncoming(state NodeInterface) {
+	transition.Incoming = append(transition.Incoming, state.(StateInterface))
+}
+
+// AppendIncoming transition to state
+func (transition *Transition) AppendOutgoing(state NodeInterface) {
+	transition.Outgoing = append(transition.Outgoing, state.(StateInterface))
 }
 
 func (transition *Transition) GetName() string {

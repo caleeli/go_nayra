@@ -8,4 +8,9 @@ type ActivityActiveState struct {
 func (state *ActivityActiveState) OnTokenArrived(token *Token, inputTokens []*Token) {
 	state.State.OnTokenArrived(token, inputTokens)
 	token.addToThreadData("taskId", token.ID.ID())
+	NotifyEvent("ACTIVITY_ACTIVATED", struct {
+		TaskId string
+	}{
+		TaskId: token.ID.String(),
+	})
 }

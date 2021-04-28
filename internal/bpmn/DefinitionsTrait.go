@@ -10,7 +10,7 @@ import (
 type DefinitionsTrait struct {
 	UUID        uuid.UUID
 	Transitions []TransitionInterface
-	States      []*State
+	States      []StateInterface
 }
 
 // Print definitions state
@@ -19,6 +19,6 @@ func (definitions *Definitions) Print() {
 		fmt.Println("Available transition: ", transition.GetName())
 	}
 	for _, state := range definitions.States {
-		fmt.Println("State ", state.Name, ":", len(state.Tokens))
+		fmt.Println("State ", state.GetName(), ":", len(state.GetTokens()))
 	}
 }

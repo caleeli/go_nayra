@@ -1,6 +1,7 @@
 package nayra
 
 import (
+	"nayra/internal/bpmn"
 	"nayra/internal/errors"
 	"nayra/internal/repository"
 	"nayra/internal/storage"
@@ -26,7 +27,7 @@ func CallProcess(definitionsId string, processId string) (request repository.Req
 		return nil, err
 	}
 	instance := request.GetInstance(0)
-	process.Execute.CreateToken(instance)
+	bpmn.CreateToken(instance, &process.Execute)
 	if err != nil {
 		return nil, err
 	}

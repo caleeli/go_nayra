@@ -17,34 +17,34 @@ type ActivityTrait struct {
 
 // Init Activity state definition
 func (node *Activity) Init(definitions *Definitions) {
-	node.Ready.Init(definitions, node, "Ready")
-	node.LoadingData.Init(definitions, node, "LoadingData")
-	node.Active.Init(definitions, node, "Active")
-	node.Completed.Init(definitions, node, "Completed")
-	node.Terminating.Init(definitions, node, "Terminating")
-	node.Failing.Init(definitions, node, "Failing")
-	node.Failed.Init(definitions, node, "Failed")
-	node.Terminated.Init(definitions, node, "Terminated")
-	node.Cancelled.Init(definitions, node, "Cancelled")
-	node.Cancelling.Init(definitions, node, "Cancelling")
-	node.Completing.Init(definitions, node, "Completing")
-	node.Ready.Connect(&node.LoadingData)
-	node.LoadingData.Connect(&node.Active)
-	node.Active.Connect(&node.Failing)
-	node.Active.Connect(&node.Terminating)
-	node.Active.Connect(&node.Cancelling)
-	node.Cancelling.Connect(&node.Cancelled)
-	node.Terminating.Connect(&node.Terminated)
-	node.Failing.Connect(&node.Failed)
-	node.Active.Connect(&node.Completing)
-	node.Completing.Connect(&node.Completed)
+	prepare(&node.Ready, definitions, node, "Ready")
+	prepare(&node.LoadingData, definitions, node, "LoadingData")
+	prepare(&node.Active, definitions, node, "Active")
+	prepare(&node.Completed, definitions, node, "Completed")
+	prepare(&node.Terminating, definitions, node, "Terminating")
+	prepare(&node.Failing, definitions, node, "Failing")
+	prepare(&node.Failed, definitions, node, "Failed")
+	prepare(&node.Terminated, definitions, node, "Terminated")
+	prepare(&node.Cancelled, definitions, node, "Cancelled")
+	prepare(&node.Cancelling, definitions, node, "Cancelling")
+	prepare(&node.Completing, definitions, node, "Completing")
+	connect(&node.Ready, &node.LoadingData)
+	connect(&node.LoadingData, &node.Active)
+	connect(&node.Active, &node.Failing)
+	connect(&node.Active, &node.Terminating)
+	connect(&node.Active, &node.Cancelling)
+	connect(&node.Cancelling, &node.Cancelled)
+	connect(&node.Terminating, &node.Terminated)
+	connect(&node.Failing, &node.Failed)
+	connect(&node.Active, &node.Completing)
+	connect(&node.Completing, &node.Completed)
 	for i := 0; i < len(node.Outgoing); i++ {
 		Outgoing := &node.Outgoing[i]
-		node.Completed.Connect(&definitions.GetSequenceFlow(*Outgoing).Transit)
+		connect(&node.Completed, &definitions.GetSequenceFlow(*Outgoing).Transit)
 	}
 	for i := 0; i < len(node.Incoming); i++ {
 		Incoming := &node.Incoming[i]
-		definitions.GetSequenceFlow(*Incoming).Transit.Connect(&node.Ready)
+		connect(&definitions.GetSequenceFlow(*Incoming).Transit, &node.Ready)
 	}
 
 }

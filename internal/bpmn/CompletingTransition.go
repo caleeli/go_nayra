@@ -19,8 +19,8 @@ func (transition CompletingTransition) Execute(instance *Instance) bool {
 	if !transition.Condition(instance, inputTokens) {
 		return false
 	}
-	transition.RemoveInputTokens(instance, inputTokens)
 	transition.CreateOutputTokens(instance, inputTokens)
+	transition.RemoveInputTokens(instance, inputTokens)
 	return true
 }
 

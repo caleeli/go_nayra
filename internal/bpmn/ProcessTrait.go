@@ -8,12 +8,12 @@ type ProcessTrait struct {
 
 // Init Process state definition
 func (node *Process) Init(definitions *Definitions) {
-	node.Calling.Init(definitions, node, "Calling")
-	node.Execute.Init(definitions, node, "Execute")
+	prepare(&node.Calling, definitions, node, "Calling")
+	prepare(&node.Execute, definitions, node, "Execute")
 	for i := 0; i < len(node.StartEvent); i++ {
 		StartEvent := &node.StartEvent[i]
-		node.Calling.Connect(&StartEvent.Active)
+		connect(&node.Calling, &StartEvent.Active)
 	}
-	node.Execute.Connect(&node.Calling)
+	connect(&node.Execute, &node.Calling)
 
 }

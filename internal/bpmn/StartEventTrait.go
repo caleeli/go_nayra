@@ -9,14 +9,14 @@ type StartEventTrait struct {
 
 // Init StartEvent state definition
 func (node *StartEvent) Init(definitions *Definitions) {
-	node.Active.Init(definitions, node, "Active")
-	node.Starting.Init(definitions, node, "Starting")
-	node.Execute.Init(definitions, node, "Execute")
+	prepare(&node.Active, definitions, node, "Active")
+	prepare(&node.Starting, definitions, node, "Starting")
+	prepare(&node.Execute, definitions, node, "Execute")
 	for i := 0; i < len(node.Outgoing); i++ {
 		Outgoing := &node.Outgoing[i]
-		node.Active.Connect(&definitions.GetSequenceFlow(*Outgoing).Transit)
+		connect(&node.Active, &definitions.GetSequenceFlow(*Outgoing).Transit)
 	}
-	node.Execute.Connect(&node.Starting)
-	node.Starting.Connect(&node.Active)
+	connect(&node.Execute, &node.Starting)
+	connect(&node.Starting, &node.Active)
 
 }

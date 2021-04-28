@@ -10,6 +10,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	nayraCli := cmd.Nayra(db)
+	queue, err := services.LogQueue()
+	if err != nil {
+		panic(err)
+	}
+	nayraCli := cmd.Nayra(db, queue)
 	nayraCli.Execute()
 }
