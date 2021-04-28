@@ -48,3 +48,10 @@ jobs:
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main main.go
           zip deployment.zip main
           aws lambda update-function-code --function-name=ShowRequest --zip-file=fileb://deployment.zip
+
+      - name: Build and delpoy uService TRANSIT TOKEN
+        run: |
+          cd client/aws/transit_token
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main main.go
+          zip deployment.zip main
+          aws lambda update-function-code --function-name=TransitToken --zip-file=fileb://deployment.zip
