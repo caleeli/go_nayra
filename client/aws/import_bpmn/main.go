@@ -15,8 +15,8 @@ type ImportBpmnEvent struct {
 }
 
 type Response struct {
-	Success   bool    `json:"success"`
-	RequestId *string `json:"requestId"`
+	Success       bool    `json:"success"`
+	DefinitionsId *string `json:"definitionsId"`
 }
 
 func main() {
@@ -50,7 +50,7 @@ func Handler(event ImportBpmnEvent) (Response, error) {
 		}, err
 	}
 	return Response{
-		Success:   true,
-		RequestId: aws.String(loaded.UUID.String()),
+		Success:       true,
+		DefinitionsId: aws.String(loaded.UUID.String()),
 	}, nil
 }
