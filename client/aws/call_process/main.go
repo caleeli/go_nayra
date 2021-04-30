@@ -3,6 +3,7 @@ package main
 import (
 	"nayra/internal/nayra"
 	"nayra/internal/services"
+	"nayra/internal/storage"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
@@ -14,9 +15,9 @@ type CallProcessEvent struct {
 }
 
 type Response struct {
-	Success   bool     `json:"success"`
-	RequestId *string  `json:"requestId"`
-	Trace     []string `json:"trace"`
+	Success bool             `json:"success"`
+	Id      *string          `json:"id"`
+	Data    storage.SRequest `json:"data"`
 }
 
 func main() {
@@ -42,10 +43,9 @@ func Handler(event CallProcessEvent) (Response, error) {
 			Success: false,
 		}, err
 	}
-	request.TraceLog()
 	return Response{
-		Success:   true,
-		RequestId: aws.String(request.GetId().String()),
-		Trace:     request.Trace(),
+		Success: true,
+		Id:      aws.String(request.GetId().String()),
+		Data:    storage.MarshalRequest(request),
 	}, nil
 }
