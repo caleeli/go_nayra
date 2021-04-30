@@ -4,6 +4,7 @@ import (
 	"log"
 	"nayra/internal/nayra"
 	"nayra/internal/services"
+	"nayra/internal/storage"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
@@ -17,9 +18,9 @@ type TransitTokenEvent struct {
 }
 
 type Response struct {
-	Success   bool     `json:"status"`
-	RequestId *string  `json:"requestId"`
-	Trace     []string `json:"trace"`
+	Success bool             `json:"status"`
+	Id      *string          `json:"id"`
+	Data    storage.SRequest `json:"data"`
 }
 
 func main() {
@@ -45,7 +46,7 @@ func Handler(event TransitTokenEvent) (Response, error) {
 		log.Fatal(err)
 	}
 	return Response{
-		RequestId: aws.String(request.GetId().String()),
-		Trace:     request.Trace(),
+		Id:   aws.String(request.GetId().String()),
+		Data: storage.MarshalRequest(request),
 	}, err
 }
