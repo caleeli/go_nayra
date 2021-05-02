@@ -8,6 +8,6 @@ func main() {
 	lambda.Start(Handler)
 }
 
-func Handler() string {
-	return "Hello world"
+func Handler() (string, error) {
+	return "Hello world", nil
 }
