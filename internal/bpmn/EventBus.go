@@ -23,10 +23,10 @@ func SubscribeEvent(event string, callback CallbackType) {
 
 // NotifyEvent Nofity a specific type of BPMN event
 func NotifyEvent(event string, body interface{}) {
-	for i := range observers[event] {
-		observers[event][i](event, body)
-	}
 	for i := range observers["*"] {
 		observers["*"][i](event, body)
+	}
+	for i := range observers[event] {
+		observers[event][i](event, body)
 	}
 }
