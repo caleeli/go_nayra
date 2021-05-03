@@ -3,7 +3,6 @@ package storage
 import (
 	"nayra/internal/bpmn"
 	"nayra/internal/repository"
-	"reflect"
 
 	"github.com/google/uuid"
 )
@@ -23,14 +22,13 @@ type sInstance struct {
 }
 
 type sToken struct {
-	ID          string
-	Status      string
-	StateIndex  int
-	ElementId   string
-	ElementType string
-	ThreadData  map[string]interface{}
-	Transition  string
-	Active      bool
+	ID         string
+	Status     string
+	StateIndex int
+	ElementId  string
+	ThreadData map[string]interface{}
+	Transition string
+	Active     bool
 }
 
 type sObservation struct {
@@ -74,14 +72,13 @@ func marshalInstance(instance *bpmn.Instance) sInstance {
 
 func marshalToken(token *bpmn.Token) sToken {
 	return sToken{
-		ID:          token.ID.String(),
-		Status:      token.Owner.GetName(),
-		StateIndex:  token.Owner.GetIndex(),
-		ElementId:   token.Owner.GetOwner().GetId(),
-		ElementType: reflect.TypeOf(token.Owner.GetOwner()).String(),
-		ThreadData:  token.ThreadData,
-		Transition:  token.Transition,
-		Active:      token.Active,
+		ID:         token.ID.String(),
+		Status:     token.Owner.GetName(),
+		StateIndex: token.Owner.GetIndex(),
+		ElementId:  token.Owner.GetOwner().GetId(),
+		ThreadData: token.ThreadData,
+		Transition: token.Transition,
+		Active:     token.Active,
 	}
 }
 
