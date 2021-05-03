@@ -26,6 +26,11 @@ func (token *Token) removeFromThreadData(name string) {
 	delete(token.ThreadData, name)
 }
 
+// getFromThread gets data from the tokens thread
+func (token *Token) getFromThreadData(name string) interface{} {
+	return token.ThreadData[name]
+}
+
 func (token *Token) copyThreadDataFrom(source *Token) (err error) {
 	jsonStr, err := json.Marshal(source.ThreadData)
 	if err != nil {

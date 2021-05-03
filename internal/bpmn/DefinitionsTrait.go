@@ -11,6 +11,7 @@ type DefinitionsTrait struct {
 	UUID        uuid.UUID
 	Transitions []TransitionInterface
 	States      []StateInterface
+	Callbacks   []*CallbackObs
 }
 
 // Print definitions state

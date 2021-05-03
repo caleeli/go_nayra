@@ -16,14 +16,20 @@ type TRequest struct {
 }
 
 type Request interface {
+	AppendInstance(instance *bpmn.Instance)
 	GetId() uuid.UUID
 	GetInstance(index int) *bpmn.Instance
 	GetInstanceById(id uuid.UUID) *bpmn.Instance
 	GetInstanceIds() []uuid.UUID
 	GetToken(uuid uuid.UUID) (*bpmn.Token, error)
 	GetDefinitions() *bpmn.Definitions
+	NextTick() bool
 	TraceLog()
 	Trace() []string
+}
+
+func (request *TRequest) AppendInstance(instance *bpmn.Instance) {
+	request.Instances = append(request.Instances, instance)
 }
 
 func (request *TRequest) GetId() uuid.UUID {
@@ -56,10 +62,10 @@ func (request *TRequest) GetToken(id uuid.UUID) (*bpmn.Token, error) {
 	return nil, errors.WrapStorageError(nil, "Not found token %s", id)
 }
 
-func (request *TRequest) CreateInstance() (*bpmn.Instance, uuid.UUID) {
+func (request *TRequest) CreateInstance(process *bpmn.Process) (*bpmn.Instance, uuid.UUID) {
 	uuid := uuid.New()
 	instance := bpmn.Instance{}
-	instance.Init(request.Definitions)
+	instance.Init(request.Definitions, process)
 	request.Instances = append(request.Instances, &instance)
 	return &instance, uuid
 }
@@ -74,10 +80,29 @@ func (request *TRequest) GetInstanceIds() (uuids []uuid.UUID) {
 	return
 }
 
+func (request *TRequest) NextTick() (changed bool) {
+	MaxNestingLevel := 10
+	changed = false
+	for i := 0; i < MaxNestingLevel; i++ {
+		exit := true
+		for j := range request.Instances {
+			if request.Instances[j].NextTick(request.Definitions) {
+				exit = false
+				changed = true
+			}
+		}
+		if exit {
+			break
+		}
+	}
+	return
+}
+
 func (request *TRequest) TraceLog() {
 	log.Println("Request:", request.ID)
 	log.Println("======================================================")
 	for _, instance := range request.Instances {
+		log.Println("------------------------------------------------------")
 		log.Println("Instance:", instance.ID)
 		log.Println("------------------------------------------------------")
 		instance.TraceLog()
@@ -87,6 +112,7 @@ func (request *TRequest) TraceLog() {
 func (request *TRequest) Trace() (trace []string) {
 	trace = make([]string, 0)
 	for _, instance := range request.Instances {
+		trace = append(trace, "------------------------------------------------------")
 		trace = append(trace, "Instance: "+instance.ID.String())
 		trace = append(trace, "------------------------------------------------------")
 		trace = append(trace, instance.Trace()...)

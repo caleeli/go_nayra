@@ -9,19 +9,53 @@ import (
 )
 
 const (
-	DEBUG = true
+	DEBUG                    = true
+	PROCESS_STATUS_ACTIVE    = "ACTIVE"
+	PROCESS_STATUS_COMPLETED = "COMPLETED"
 )
+
+type CallbackSign = func(observer *Observer, observable *Observable, body interface{})
+type CallbackObs struct {
+	Index    int
+	Callback CallbackSign
+}
+
+type Observable struct {
+	TargetInstance *Instance
+	TargetElement  NamedElementInterface
+	TargetEvent    string
+}
+type Observer struct {
+	SourceInstance *Instance
+	SourceToken    *Token
+	Callback       *CallbackObs
+}
+type Observation struct {
+	Observable *Observable
+	Observer   *Observer
+}
 
 // Instance from Nayra
 type Instance struct {
-	ID     uuid.UUID `json:"id"`
-	Tokens []*Token
-	logs   []string
+	ID           uuid.UUID `json:"id"`
+	Process      *Process
+	Tokens       []*Token
+	logs         []string
+	Observations []*Observation
+	Status       string
+}
+
+func NewInstance(definitions *Definitions, process *Process) *Instance {
+	instance := Instance{}
+	instance.Init(definitions, process)
+	return &instance
 }
 
 // Init state
-func (instance *Instance) Init(definitions *Definitions) {
+func (instance *Instance) Init(definitions *Definitions, process *Process) {
 	instance.ID = uuid.New()
+	instance.Process = process
+	instance.Status = PROCESS_STATUS_ACTIVE
 	instance.Tokens = []*Token{}
 }
 
@@ -35,6 +69,19 @@ func (instance *Instance) CreateToken(state StateInterface) *Token {
 	}
 	instance.Tokens = append(instance.Tokens, &token)
 	return &token
+}
+
+func (instance *Instance) AttachObserver(definitions *Definitions, observable *Observable, observer *Observer) {
+	instance.Observations = append(instance.Observations, &Observation{observable, observer})
+}
+
+func (instance *Instance) NotifyObservers(observable *Observable, body interface{}) {
+	for _, obs := range instance.Observations {
+		if obs.Observable.TargetElement.GetId() == observable.TargetElement.GetId() &&
+			obs.Observable.TargetEvent == observable.TargetEvent {
+			obs.Observer.Callback.Callback(obs.Observer, observable, body)
+		}
+	}
 }
 
 // GetToken by id
@@ -54,8 +101,9 @@ func (instance *Instance) RemoveToken(token *Token) bool {
 }
 
 // NextTick execute transits
-func (instance *Instance) NextTick(definitions *Definitions) {
+func (instance *Instance) NextTick(definitions *Definitions) (changed bool) {
 	MaxNestingLevel := 256
+	changed = false
 	for i := 0; i < MaxNestingLevel; i++ {
 		exit := true
 		for _, transition := range definitions.Transitions {
@@ -76,12 +124,14 @@ func (instance *Instance) NextTick(definitions *Definitions) {
 					)
 				}
 				exit = false
+				changed = true
 			}
 		}
 		if exit {
 			break
 		}
 	}
+	return
 }
 
 // log an action during execution

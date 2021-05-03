@@ -11,6 +11,13 @@ func prepare(node NodeInterface, definitions *Definitions, owner NamedElementInt
 	}
 }
 
+func registerCallback(definitions *Definitions, callback CallbackSign) *CallbackObs {
+	index := len(definitions.Callbacks)
+	cb := &CallbackObs{Callback: callback, Index: index}
+	definitions.Callbacks = append(definitions.Callbacks, cb)
+	return cb
+}
+
 func connect(source NodeInterface, target NodeInterface) {
 	source.AppendOutgoing(target)
 	target.AppendIncoming(source)
@@ -21,4 +28,14 @@ func CreateToken(instance *Instance, state StateInterface) *Token {
 	token := instance.CreateToken(state)
 	state.AppendToken(token)
 	return token
+}
+
+func CallProcess(definitions *Definitions, process *Process) *Instance {
+	instance := NewInstance(definitions, process)
+	CreateToken(instance, &process.Execute)
+	NotifyEvent("PROCESS_INSTANCE_CREATED", InstanceCreatedEvent{
+		process,
+		instance,
+	})
+	return instance
 }

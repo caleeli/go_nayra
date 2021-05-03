@@ -22,21 +22,21 @@ func CallProcess(definitionsId string, processId string) (request repository.Req
 	if process == nil {
 		return nil, errors.WrapEngineError(nil, "Process not found (ID=%s)", processId)
 	}
-	request, err = storage.NewRequest(definitions, 1)
+	request, err = storage.NewRequest(definitions, 0)
 	if err != nil {
 		return nil, err
 	}
-	instance := request.GetInstance(0)
-	bpmn.CreateToken(instance, &process.Execute)
-	if err != nil {
-		return nil, err
-	}
+	bpmn.SubscribeEvent("PROCESS_INSTANCE_CREATED", func(event string, body interface{}) {
+		evt := body.(bpmn.InstanceCreatedEvent)
+		request.AppendInstance(evt.Instance)
+	})
+	bpmn.CallProcess(definitions, process)
 	err = storage.InsertRequest(request)
 	if err != nil {
 		return nil, err
 	}
 	// @todo queue
-	instance.NextTick(definitions)
+	request.NextTick()
 	err = storage.UpdateRequest(request)
 	if err != nil {
 		return nil, err
@@ -54,10 +54,8 @@ func TransitToken(requestId, tokenId uuid.UUID, transition string) (request repo
 		return nil, err
 	}
 	token.Transition = transition
-	definitions := request.GetDefinitions()
-	instance := token.Instance
 	// @todo queue
-	instance.NextTick(definitions)
+	request.NextTick()
 	err = storage.UpdateRequest(request)
 	if err != nil {
 		return nil, err
