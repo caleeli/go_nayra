@@ -115,6 +115,7 @@ func UnmarshalRequest(request *SRequest) (repository.Request, error) {
 		}
 		output.Instances[i] = &bpmn.Instance{
 			ID:           ID,
+			RequestId:    request.Id,
 			Process:      definitions.GetProcess(instance.ProcessId),
 			Tokens:       make([]*bpmn.Token, len(instance.Tokens)),
 			Observations: make([]*bpmn.Observation, len(instance.Observations)),

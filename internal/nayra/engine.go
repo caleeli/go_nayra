@@ -26,10 +26,12 @@ func CallProcess(definitionsId string, processId string) (request repository.Req
 	if err != nil {
 		return nil, err
 	}
+	// @todo common code
 	bpmn.SubscribeEvent("PROCESS_INSTANCE_CREATED", func(event string, body interface{}) {
 		evt := body.(bpmn.InstanceCreatedEvent)
 		request.AppendInstance(evt.Instance)
 	})
+	//
 	bpmn.CallProcess(definitions, process)
 	err = storage.InsertRequest(request)
 	if err != nil {
@@ -49,6 +51,12 @@ func TransitToken(requestId, tokenId uuid.UUID, transition string) (request repo
 	if err != nil {
 		return nil, err
 	}
+	// @todo common code
+	bpmn.SubscribeEvent("PROCESS_INSTANCE_CREATED", func(event string, body interface{}) {
+		evt := body.(bpmn.InstanceCreatedEvent)
+		request.AppendInstance(evt.Instance)
+	})
+	//
 	token, err := request.GetToken(tokenId)
 	if err != nil {
 		return nil, err

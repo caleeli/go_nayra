@@ -39,6 +39,7 @@ type Observation struct {
 type Instance struct {
 	ID           uuid.UUID `json:"id"`
 	Process      *Process
+	RequestId    string
 	Tokens       []*Token
 	logs         []string
 	Observations []*Observation

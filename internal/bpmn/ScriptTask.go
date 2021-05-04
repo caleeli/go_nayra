@@ -7,9 +7,10 @@ import (
 // ScriptTask from BPMN
 type ScriptTask struct {
 	Task
-	XMLName      xml.Name
-	Script       Script `xml:"script"`
-	ScriptFormat string `xml:"scriptFormat,attr"`
+	ScriptTaskTrait `bson:"-"`
+	XMLName         xml.Name
+	Script          Script `xml:"script"`
+	ScriptFormat    string `xml:"scriptFormat,attr"`
 }
 
 // ParseTree of components of ScriptTask.

@@ -29,6 +29,7 @@ type Request interface {
 }
 
 func (request *TRequest) AppendInstance(instance *bpmn.Instance) {
+	instance.RequestId = request.ID.String()
 	request.Instances = append(request.Instances, instance)
 }
 
