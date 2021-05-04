@@ -19,4 +19,6 @@ func (scriptTask *ScriptTask) ParseTree(definitions *Definitions) {
 
 	scriptTask.Script.ParseTree(definitions) // Script.
 
+	scriptTask.Init(definitions)
+
 }

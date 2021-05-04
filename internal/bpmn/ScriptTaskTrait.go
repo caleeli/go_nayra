@@ -1,10 +1,10 @@
 package bpmn
 
-// CallActivityTrait from BPMN
+// ScriptTaskTrait from BPMN
 type ScriptTaskTrait struct {
 }
 
-// Init Activity state definition
+// Init ScriptTaskTrait state definition
 func (node *ScriptTask) Init(definitions *Definitions) {
 	SubscribeEvent("ACTIVITY_ACTIVATED", func(event string, body interface{}) {
 		payload := body.(ActivityActivatedEvent)
