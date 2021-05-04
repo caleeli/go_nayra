@@ -33,6 +33,13 @@ func Handler(event CallProcessEvent) (Response, error) {
 		}, err
 	}
 	nayra.SetupStorageService(db)
+	sqs, err := services.SQS()
+	if err != nil {
+		return Response{
+			Success: false,
+		}, err
+	}
+	services.SetupQueueService(sqs)
 
 	// run
 	definitionsId := event.DefinitionsId
