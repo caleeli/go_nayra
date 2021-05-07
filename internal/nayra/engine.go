@@ -1,7 +1,6 @@
 package nayra
 
 import (
-	"log"
 	"nayra/internal/bpmn"
 	"nayra/internal/errors"
 	"nayra/internal/repository"
@@ -48,7 +47,6 @@ func CallProcess(definitionsId string, processId string) (request repository.Req
 }
 
 func TransitToken(requestId, tokenId uuid.UUID, transition string) (request repository.Request, err error) {
-	log.Println("TransitToken", requestId.String(), tokenId.String(), transition)
 	request, err = storage.LoadRequest(requestId)
 	if err != nil {
 		return nil, err

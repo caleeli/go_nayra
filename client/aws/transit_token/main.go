@@ -45,7 +45,6 @@ func Handler(event TransitTokenEvent) (Response, error) {
 	services.SetupQueueService(sqs)
 
 	// run
-	log.Println("Handler", event.RequestId, event.TokenId, event.Transition)
 	requestId, _ := uuid.Parse(event.RequestId)
 	tokenId, _ := uuid.Parse(event.TokenId)
 	transition := event.Transition
@@ -54,7 +53,8 @@ func Handler(event TransitTokenEvent) (Response, error) {
 		log.Fatal(err)
 	}
 	return Response{
-		Id:   aws.String(request.GetId().String()),
-		Data: storage.MarshalRequest(request),
+		Success: true,
+		Id:      aws.String(request.GetId().String()),
+		Data:    storage.MarshalRequest(request),
 	}, err
 }

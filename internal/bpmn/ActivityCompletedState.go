@@ -1,7 +1,5 @@
 package bpmn
 
-import "fmt"
-
 type ActivityCompletedState struct {
 	State
 }
@@ -10,7 +8,6 @@ type ActivityCompletedState struct {
 func (state *ActivityCompletedState) OnTokenLeaves(token *Token) {
 	state.State.OnTokenLeaves(token)
 	token.removeFromThreadData("taskId")
-	fmt.Println("~~~~~~~~~~~~~~~~~~~~~~~~~~ENTRO1!!")
 	NotifyEvent("ACTIVITY_COMPLETED", struct {
 		TaskId string
 	}{
