@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -61,12 +62,14 @@ func (instance *Instance) Init(definitions *Definitions, process *Process) {
 }
 
 func (instance *Instance) CreateToken(state StateInterface) *Token {
+	now := time.Now()
 	token := Token{
 		ID:         uuid.New(),
 		Instance:   instance,
 		Owner:      state,
 		Active:     true,
 		ThreadData: make(map[string]interface{}),
+		Timestamp:  now.UnixNano() / 1000,
 	}
 	instance.Tokens = append(instance.Tokens, &token)
 	return &token

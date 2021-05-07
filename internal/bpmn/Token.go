@@ -14,6 +14,7 @@ type Token struct {
 	ThreadData map[string]interface{}
 	Transition string
 	Active     bool
+	Timestamp  int64
 }
 
 // AddToThreadData adds data to the tokens thread

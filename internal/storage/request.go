@@ -29,6 +29,7 @@ type sToken struct {
 	ThreadData map[string]interface{}
 	Transition string
 	Active     bool
+	Timestamp  int64
 }
 
 type sObservation struct {
@@ -79,6 +80,7 @@ func marshalToken(token *bpmn.Token) sToken {
 		ThreadData: token.ThreadData,
 		Transition: token.Transition,
 		Active:     token.Active,
+		Timestamp:  token.Timestamp,
 	}
 }
 
@@ -161,6 +163,7 @@ func unmarshalToken(definitions *bpmn.Definitions, instance *bpmn.Instance, toke
 		ThreadData: token.ThreadData,
 		Transition: token.Transition,
 		Active:     token.Active,
+		Timestamp:  token.Timestamp,
 	}
 	if output.Active {
 		owner.AppendToken(output)
