@@ -18,7 +18,9 @@ type TransitTokenEvent struct {
 }
 
 type TransitTokenEventCB struct {
-	RequestPayload TransitTokenEvent `json:"requestPayload"`
+	RequestId string
+	TokenId   string
+	Script    string
 }
 
 type Response struct {
@@ -32,7 +34,11 @@ func main() {
 }
 
 func Handler(eventCB TransitTokenEventCB) (Response, error) {
-	event := eventCB.RequestPayload
+	event := TransitTokenEvent{
+		eventCB.RequestId,
+		eventCB.TokenId,
+		"COMPLETE",
+	}
 	// start
 	db, err := services.DynamoDB()
 	if err != nil {
