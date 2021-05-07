@@ -15,6 +15,7 @@ type ShowRequestEvent struct {
 
 type Response struct {
 	Success bool             `json:"status"`
+	Id      string           `json:"id"`
 	Data    storage.SRequest `json:"data"`
 }
 
@@ -39,6 +40,7 @@ func Handler(event ShowRequestEvent) (Response, error) {
 	}
 	return Response{
 		Success: true,
+		Id:      request.GetId().String(),
 		Data:    storage.MarshalRequest(request),
 	}, nil
 }
