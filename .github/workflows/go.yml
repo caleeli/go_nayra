@@ -56,9 +56,9 @@ jobs:
           zip deployment.zip main
           aws lambda update-function-code --function-name=TransitToken --zip-file=fileb://deployment.zip
 
-      - name: Build and delpoy Hello World
+      - name: Build and delpoy TRANSIT TOKEN CB
         run: |
-          cd client/aws/hello_world
+          cd client/aws/transit_token_cb
           CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main main.go
           zip deployment.zip main
-          aws lambda update-function-code --function-name=HelloWorld --zip-file=fileb://deployment.zip
+          aws lambda update-function-code --function-name=TransitTokenCB --zip-file=fileb://deployment.zip
