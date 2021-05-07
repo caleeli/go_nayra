@@ -18,9 +18,11 @@ type TransitTokenEvent struct {
 }
 
 type TransitTokenEventCB struct {
-	RequestId string
-	TokenId   string
-	Script    string
+	RequestPayload struct {
+		RequestId string
+		TokenId   string
+		Script    string
+	} `json:"requestPayload"`
 }
 
 type Response struct {
@@ -35,8 +37,8 @@ func main() {
 
 func Handler(eventCB TransitTokenEventCB) (Response, error) {
 	event := TransitTokenEvent{
-		eventCB.RequestId,
-		eventCB.TokenId,
+		eventCB.RequestPayload.RequestId,
+		eventCB.RequestPayload.TokenId,
 		"COMPLETE",
 	}
 	// start
